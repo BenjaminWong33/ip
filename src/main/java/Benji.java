@@ -2,6 +2,7 @@
  * Starts the BENJI chatbot application.
  */
 import java.util.Scanner;
+
 public class Benji {
     public static void main(String[] args) {
         String line = "____________________________________________________________";
@@ -13,9 +14,8 @@ public class Benji {
                 + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 
         Scanner scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user
-        String[] tasks = new String[100]; // to store all tasks
+        Task[] tasks = new Task[100]; // to store all tasks
         int idx = 0;  // index for tasks
-
 
         System.out.println(line);
         System.out.println(banner);
@@ -33,7 +33,7 @@ public class Benji {
                     System.out.println((i + 1) + ". " + tasks[i]);
                 }
             } else {
-                tasks[idx] = userInput; // adding a new task
+                tasks[idx] = new Task(userInput); // adding a new task
                 idx++;
                 System.out.println("Added: " + userInput);
 
