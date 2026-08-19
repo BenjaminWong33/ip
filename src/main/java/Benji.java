@@ -31,7 +31,7 @@ public class Benji {
             if (userInput.toUpperCase().equals("LIST")) {
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < idx; i++) { // revealing all the tasks in the tasks array
-                    System.out.println((i + 1) + ". " + tasks[i]);
+                    System.out.println((i + 1) + "." + tasks[i]);
                 }
             } else if (userInput.toUpperCase().startsWith("MARK ")) { // startsWith function to track command
                 // Integer.parseInt(...) converts the cleaned text string representing a number into an actual int
