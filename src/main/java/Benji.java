@@ -57,13 +57,13 @@ public class Benji {
                 idx++;
                 System.out.println("Got it. I've added this task: ");
                 System.out.println("  " + task);
-                System.out.println("Now you have " + tasks.length + " tasks in the list.");
+                System.out.println("Now you have " + idx + " tasks in the list.");
 
             } else if (userInput.toUpperCase().startsWith("DEADLINE")) {
                 String task_description = userInput.substring("deadline".length()).trim(); // filer deadline
                 // .indexOf(...) finds the start index of the phrase in the string
                 int byIndex = task_description.indexOf("/by");
-                String description = task_description.substring(0, byIndex);
+                String description = task_description.substring(0, byIndex).trim();
                 String by = task_description.substring(byIndex + "/by".length()).trim();
                 Task task = new Deadline(description, by);
                 tasks[idx] = task;
@@ -71,7 +71,7 @@ public class Benji {
 
                 System.out.println("Got it. I've added this task:");
                 System.out.println("  " + task);
-                System.out.println("Now you have " + " tasks in the list.");
+                System.out.println("Now you have " + idx +  " tasks in the list.");
 
 
             } else {
