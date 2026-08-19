@@ -51,13 +51,28 @@ public class Benji {
                 System.out.println("  " + task);
 
             } else if (userInput.toUpperCase().startsWith("TODO")) {
-                String task_description = userInput.substring(4).trim();
-                Task task  = new Todo(task_description);
+                String task_description = userInput.substring("todo".length()).trim(); // filter todo
+                Task task  = new Todo(task_description); // create todo task
                 tasks[idx] = task;
                 idx++;
                 System.out.println("Got it. I've added this task: ");
                 System.out.println("  " + task);
                 System.out.println("Now you have " + tasks.length + " tasks in the list.");
+
+            } else if (userInput.toUpperCase().startsWith("DEADLINE")) {
+                String task_description = userInput.substring("deadline".length()).trim(); // filer deadline
+                // .indexOf(...) finds the start index of the phrase in the string
+                int byIndex = task_description.indexOf("/by");
+                String description = task_description.substring(0, byIndex);
+                String by = task_description.substring(byIndex + "/by".length()).trim();
+                Task task = new Deadline(description, by);
+                tasks[idx] = task;
+                idx ++;
+
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + task);
+                System.out.println("Now you have " + " tasks in the list.");
+
 
             } else {
                 tasks[idx] = new Task(userInput); // adding a new task
