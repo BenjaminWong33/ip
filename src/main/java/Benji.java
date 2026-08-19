@@ -11,7 +11,13 @@ public class Benji {
                 + "  BB  BB  EE       NN  NNN  JJ JJJ     III  \n"
                 + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 
-
+        System.out.println(line);
+        System.out.println(banner);
+        System.out.println("Hello! I'm BENJI");
+        System.out.println("What can I do for you?");
+        System.out.println(line);
+        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println(line);
 
     }
 }
