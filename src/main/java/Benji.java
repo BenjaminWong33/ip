@@ -41,6 +41,12 @@ public class Benji {
                 task.markAsDone();
                 System.out.println("Nice! I've marked this task as done:");
                 System.out.println("  " + task);
+            } else if (userInput.toUpperCase().startsWith("UNMARK")) {
+                int taskNumber = Integer.parseInt(userInput.substring(7).trim());
+                Task task = tasks[taskNumber - 1];
+                task.markAsNotDone();
+                System.out.println("Ok, I've marked this task as not done yet:");
+                System.out.println("  " + task);
             } else {
                 tasks[idx] = new Task(userInput); // adding a new task
                 idx++;
