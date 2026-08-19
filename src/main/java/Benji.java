@@ -19,7 +19,7 @@ public class Benji {
 
         System.out.println(line);
         System.out.println(banner);
-        System.out.println("Hello! I'm BENJI");
+        System.out.println("Hello! I'm BENJI.");
         System.out.println("What can I do for you?");
         System.out.println(line);
         while(true) {
@@ -29,10 +29,11 @@ public class Benji {
             }
 
             if (userInput.toUpperCase().equals("LIST")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < idx; i++) { // revealing all the tasks in the tasks array
                     System.out.println((i + 1) + ". " + tasks[i]);
                 }
-            } else if (userInput.toUpperCase().startsWith("MARK")) { // startsWith function to track command
+            } else if (userInput.toUpperCase().startsWith("MARK ")) { // startsWith function to track command
                 // Integer.parseInt(...) converts the cleaned text string representing a number into an actual int
                 // .substring(5) skips the first 5 chars, 0 through 4
                 // .trim() cleans up and removes empty space chars from both the front and back
@@ -41,11 +42,11 @@ public class Benji {
                 task.markAsDone();
                 System.out.println("Nice! I've marked this task as done:");
                 System.out.println("  " + task);
-            } else if (userInput.toUpperCase().startsWith("UNMARK")) {
+            } else if (userInput.toUpperCase().startsWith("UNMARK ")) {
                 int taskNumber = Integer.parseInt(userInput.substring(7).trim());
                 Task task = tasks[taskNumber - 1];
                 task.markAsNotDone();
-                System.out.println("Ok, I've marked this task as not done yet:");
+                System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println("  " + task);
             } else {
                 tasks[idx] = new Task(userInput); // adding a new task
