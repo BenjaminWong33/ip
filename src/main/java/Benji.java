@@ -50,6 +50,15 @@ public class Benji {
                 System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println("  " + task);
 
+            } else if (userInput.toUpperCase().startsWith("TODO")) {
+                String task_description = userInput.substring(4).trim();
+                Task task  = new Todo(task_description);
+                tasks[idx] = task;
+                idx++;
+                System.out.println("Got it. I've added this task: ");
+                System.out.println("  " + task);
+                System.out.println("Now you have " + tasks.length + " tasks in the list.");
+
             } else {
                 tasks[idx] = new Task(userInput); // adding a new task
                 idx++;
