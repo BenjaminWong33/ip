@@ -73,6 +73,20 @@ public class Benji {
                 System.out.println("  " + task);
                 System.out.println("Now you have " + idx +  " tasks in the list.");
 
+            } else if (userInput.toUpperCase().startsWith("EVENT")) {
+                String taskDescription = userInput.substring("event".length()).trim();
+                int startIndex = taskDescription.indexOf("/from"); // get starting index of "/from"
+                int endIndex = taskDescription.indexOf("/to");  //  get starting index of "/to"
+                String description = taskDescription.substring(0, startIndex).trim(); // extract task description
+                String start = taskDescription.substring(startIndex + "/from".length(), endIndex).trim();  // extract start d
+                String end = taskDescription.substring(endIndex + "/to".length()).trim(); // extract end d
+                Task task = new Event(description, start, end); // create new Event
+                tasks[idx] = task;
+                idx++;
+
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + task);
+                System.out.println("Now you have " + idx +  " tasks in the list.");
             } else {
                 tasks[idx] = new Task(userInput); // adding a new task
                 idx++;
