@@ -51,8 +51,8 @@ public class Benji {
                 System.out.println("  " + task);
 
             } else if (userInput.toUpperCase().startsWith("TODO")) {
-                String task_description = userInput.substring("todo".length()).trim(); // filter todo
-                Task task  = new Todo(task_description); // create todo task
+                String taskDescription = userInput.substring("todo".length()).trim(); // filter todo
+                Task task  = new Todo(taskDescription); // create todo task
                 tasks[idx] = task;
                 idx++;
                 System.out.println("Got it. I've added this task: ");
@@ -60,19 +60,18 @@ public class Benji {
                 System.out.println("Now you have " + idx + " tasks in the list.");
 
             } else if (userInput.toUpperCase().startsWith("DEADLINE")) {
-                String task_description = userInput.substring("deadline".length()).trim(); // filer deadline
+                String taskDescription = userInput.substring("deadline".length()).trim(); // filer deadline
                 // .indexOf(...) finds the start index of the phrase in the string
-                int byIndex = task_description.indexOf("/by");
-                String description = task_description.substring(0, byIndex).trim();
-                String by = task_description.substring(byIndex + "/by".length()).trim();
-                Task task = new Deadline(description, by);
+                int byIndex = taskDescription.indexOf("/by");
+                String description = taskDescription.substring(0, byIndex).trim(); // extract out description
+                String by = taskDescription.substring(byIndex + "/by".length()).trim(); // extract out timing
+                Task task = new Deadline(description, by); // create deadline task
                 tasks[idx] = task;
                 idx ++;
 
                 System.out.println("Got it. I've added this task:");
                 System.out.println("  " + task);
                 System.out.println("Now you have " + idx +  " tasks in the list.");
-
 
             } else {
                 tasks[idx] = new Task(userInput); // adding a new task
