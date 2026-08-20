@@ -86,9 +86,15 @@ public class Benji {
                     String taskDescription = userInput.substring("event".length()).trim();
                     int startIndex = taskDescription.indexOf("/from"); // get starting index of "/from"
                     int endIndex = taskDescription.indexOf("/to");  //  get starting index of "/to"
+                    if (startIndex == -1 || endIndex == -1) { // check that both /from and /to are in the command
+                        throw new BenjiException("Please ensure both '/from' and '/to' are included" +
+                                                 "in your event description.");
+                    }
                     String description = taskDescription.substring(0, startIndex).trim(); // extract task description
-                    String start = taskDescription.substring(startIndex + "/from".length(), endIndex).trim();  // extract start d
-                    String end = taskDescription.substring(endIndex + "/to".length()).trim(); // extract end d
+                    // extract start date
+                    String start = taskDescription.substring(startIndex + "/from".length(), endIndex).trim();
+                    // extract end date
+                    String end = taskDescription.substring(endIndex + "/to".length()).trim();
                     Task task = new Event(description, start, end); // create new Event
                     tasks[idx] = task;
                     idx++;
