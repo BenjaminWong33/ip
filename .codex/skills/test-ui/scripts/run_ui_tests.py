@@ -81,6 +81,10 @@ def main() -> int:
         show_session(title, commands, run.stdout)
         if run.returncode != 0:
             print("Test failed: the application exited with an error.", file=sys.stderr)
+            print("\nExpected output:")
+            print(expected, end="")
+            print("\nActual output:")
+            print(run.stdout, end="")
             print(run.stderr, file=sys.stderr)
             return 1
         if normalize_output(run.stdout) != normalize_output(expected):

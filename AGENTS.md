@@ -38,4 +38,6 @@ Do not commit or push unless explicitly asked.
 
 After changing the console application's behavior, update `test/ui-test-plan.md` if the
 expected behavior has changed, then invoke the `test-ui` skill. Do not run UI tests for
-documentation-only changes. Report any failed test before making further changes.
+documentation-only changes. Include invalid-input cases as well as valid commands, and
+interleave them in the same test session to verify that an error does not alter the task
+list. Report any failed test before making further changes.
