@@ -133,9 +133,13 @@ public class Benji {
                         if (taskDescription.isEmpty()) {
                             throw new BenjiException("Please enter a task number after delete");
                         }
-                        int taskNumber = Integer.parseInt(taskDescription);
-                        Task deleted_task  = tasks.get(taskNumber - 1);
-                        tasks.remove(taskNumber);
+                        int taskNumber = Integer.parseInt(taskDescription.trim());
+                        if (taskNumber < 1 || taskNumber > tasks.size()) { // check for invalid task number
+                            throw new BenjiException("I do apologize, but this task number appears to" +
+                                                     "be non-existent.");
+                        }
+                        Task deleted_task  = tasks.get(taskNumber - 1); // get deleted task
+                        tasks.remove(taskNumber - 1);
                         System.out.println("Noted. I've removed this task:");
                         System.out.println("  " + deleted_task);
                         System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
