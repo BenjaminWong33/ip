@@ -38,9 +38,12 @@ public class Benji {
                     // .substring(5) skips the first 5 chars, 0 through 4
                     // .trim() cleans up and removes empty space chars from both the front and back
                     int taskNumber = Integer.parseInt(userInput.substring(5).trim());
+                    if (taskNumber < 1 || taskNumber > idx) { // handle error for numbers that are out of range
+                        throw new BenjiException("I do apologize, but this task number appears to be non-existent.");
+                    }
                     Task task  = tasks[taskNumber - 1];
                     task.markAsDone();
-                    System.out.println("Nice! I've marked this task as done:");
+                    System.out.println("Splendid! I have marked this task as completed:");
                     System.out.println("  " + task);
 
                 } else if (userInput.toUpperCase().startsWith("UNMARK ")) {
