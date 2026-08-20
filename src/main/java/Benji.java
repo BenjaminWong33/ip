@@ -69,6 +69,9 @@ public class Benji {
                     String taskDescription = userInput.substring("deadline".length()).trim(); // filer deadline
                     // .indexOf(...) finds the start index of the phrase in the string
                     int byIndex = taskDescription.indexOf("/by");
+                    if (byIndex == -1) {
+                        throw new BenjiException("Please ensure '/by TIME' is included in your deadline description.");
+                    }
                     String description = taskDescription.substring(0, byIndex).trim(); // extract out description
                     String by = taskDescription.substring(byIndex + "/by".length()).trim(); // extract out timing
                     Task task = new Deadline(description, by); // create deadline task
