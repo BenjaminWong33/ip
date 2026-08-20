@@ -127,7 +127,7 @@ public class Benji {
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
                     System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
-                } else if (userInput.toUpperCase().startsWith("DELETE")) {
+                } else if (userInput.toUpperCase().startsWith("DELETE ")) {
                     try {
                         String taskDescription = userInput.substring("delete".length()).trim();
                         if (taskDescription.isEmpty()) {
@@ -135,7 +135,7 @@ public class Benji {
                         }
                         int taskNumber = Integer.parseInt(taskDescription.trim());
                         if (taskNumber < 1 || taskNumber > tasks.size()) { // check for invalid task number
-                            throw new BenjiException("I do apologize, but this task number appears to" +
+                            throw new BenjiException("I do apologize, but this task number appears to " +
                                                      "be non-existent.");
                         }
                         Task deleted_task  = tasks.get(taskNumber - 1); // get deleted task
