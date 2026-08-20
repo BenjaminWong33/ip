@@ -129,6 +129,20 @@ public class Benji {
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
                     System.out.println("Now you have " + idx +  " tasks in the list.");
+                } else if (userInput.toUpperCase().startsWith("DELETE")) {
+                    try {
+                        String taskDescription = userInput.substring("delete".length()).trim();
+                        if (taskDescription.isEmpty()) {
+                            throw new BenjiException("Please enter a task number after delete");
+                        }
+                        int taskNumber = Integer.parseInt(taskDescription);
+
+                    } catch (NumberFormatException e) {
+                        // NumberFormatException (commonly referred to by your query) is a runtime error thrown when
+                        // code tries to convert a text string into a number, but the string has an invalid format.
+                        throw new BenjiException("Please enter a whole task number after delete.");
+                    }
+
                 } else {
 //                    tasks[idx] = new Task(userInput); // adding a new task
 //                    idx++;
