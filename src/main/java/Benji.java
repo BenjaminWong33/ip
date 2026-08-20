@@ -2,6 +2,7 @@
  * Starts the BENJI chatbot application.
  */
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Benji {
     public static void main(String[] args) {
@@ -14,8 +15,7 @@ public class Benji {
                 + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 
         Scanner scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user
-        Task[] tasks = new Task[100]; // to store all tasks
-        int idx = 0;  // index for tasks
+        ArrayList<Task> tasks = new ArrayList<>(); // to store all tasks
 
         System.out.println(line);
         System.out.println(banner);
@@ -30,19 +30,20 @@ public class Benji {
             try {
                 if (userInput.toUpperCase().equals("LIST")) {
                     System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < idx; i++) { // revealing all the tasks in the tasks array
-                        System.out.println((i + 1) + "." + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) { // revealing all the tasks in the tasks array
+                        System.out.println((i + 1) + "." + tasks.get(i));
                     }
+
                 } else if (userInput.toUpperCase().startsWith("MARK ")) { // startsWith function to track command
                     // Integer.parseInt(...) converts the cleaned text string representing a number into an actual int
                     // .substring(5) skips the first 5 chars, 0 through 4
                     // .trim() cleans up and removes empty space chars from both the front and back
                     try {
                         int taskNumber = Integer.parseInt(userInput.substring(5).trim());
-                        if (taskNumber < 1 || taskNumber > idx) { // handle error for numbers that are out of range
+                        if (taskNumber < 1 || taskNumber > tasks.size()) { // handle error for numbers that are out of range
                             throw new BenjiException("I do apologize, but this task number appears to be non-existent.");
                         }
-                        Task task  = tasks[taskNumber - 1];
+                        Task task  = tasks.get(taskNumber - 1);
                         task.markAsDone();
                         System.out.println("Splendid! I have marked this task as completed:");
                         System.out.println("  " + task);
@@ -52,7 +53,7 @@ public class Benji {
 
                 } else if (userInput.toUpperCase().startsWith("UNMARK ")) {
                     int taskNumber = Integer.parseInt(userInput.substring(7).trim());
-                    Task task = tasks[taskNumber - 1];
+                    Task task = tasks.get(taskNumber - 1);
                     task.markAsNotDone();
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + task);
@@ -63,11 +64,10 @@ public class Benji {
                         throw new BenjiException("Please enter a description after todo");
                     }
                     Task task  = new Todo(taskDescription); // create todo task
-                    tasks[idx] = task;
-                    idx++;
+                    tasks.add(task);
                     System.out.println("Got it. I've added this task: ");
                     System.out.println("  " + task);
-                    System.out.println("Now you have " + idx + " tasks in the list.");
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
 
                 } else if (userInput.toUpperCase().startsWith("DEADLINE")) {
                     String taskDescription = userInput.substring("deadline".length()).trim(); // filer deadline
@@ -89,12 +89,10 @@ public class Benji {
                     }
 
                     Task task = new Deadline(description, by); // create deadline task
-                    tasks[idx] = task;
-                    idx ++;
-
+                    tasks.add(task);
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
-                    System.out.println("Now you have " + idx +  " tasks in the list.");
+                    System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
 
                 } else if (userInput.toUpperCase().startsWith("EVENT")) {
                     String taskDescription = userInput.substring("event".length()).trim();
@@ -123,12 +121,12 @@ public class Benji {
                     }
 
                     Task task = new Event(description, start, end); // create new Event
-                    tasks[idx] = task;
-                    idx++;
+                    tasks.add(task);
+
 
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
-                    System.out.println("Now you have " + idx +  " tasks in the list.");
+                    System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
                 } else if (userInput.toUpperCase().startsWith("DELETE")) {
                     try {
                         String taskDescription = userInput.substring("delete".length()).trim();
