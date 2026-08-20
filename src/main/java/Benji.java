@@ -52,6 +52,7 @@ public class Benji {
 
             } else if (userInput.toUpperCase().startsWith("TODO")) {
                 String taskDescription = userInput.substring("todo".length()).trim(); // filter todo
+
                 Task task  = new Todo(taskDescription); // create todo task
                 tasks[idx] = task;
                 idx++;
