@@ -91,10 +91,10 @@ public class Benji {
                     System.out.println("  " + task);
                     System.out.println("Now you have " + idx +  " tasks in the list.");
                 } else {
-                    tasks[idx] = new Task(userInput); // adding a new task
-                    idx++;
-                    System.out.println("Added: " + userInput);
-
+//                    tasks[idx] = new Task(userInput); // adding a new task
+//                    idx++;
+//                    System.out.println("Added: " + userInput);
+                      throw new BenjiException("I beg your pardon, I am afraid I do not recognise this command.");
                 }
             } catch (BenjiException e) {
                 System.out.println(e.getMessage());
