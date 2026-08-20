@@ -69,11 +69,21 @@ public class Benji {
                     String taskDescription = userInput.substring("deadline".length()).trim(); // filer deadline
                     // .indexOf(...) finds the start index of the phrase in the string
                     int byIndex = taskDescription.indexOf("/by");
+
                     if (byIndex == -1) {
                         throw new BenjiException("Please ensure '/by TIME' is included in your deadline description.");
                     }
                     String description = taskDescription.substring(0, byIndex).trim(); // extract out description
-                    String by = taskDescription.substring(byIndex + "/by".length()).trim(); // extract out timing
+                    if (description.isEmpty()) {
+                        throw new BenjiException("Please enter a description after deadline");
+                    }
+
+                    // extract out timing
+                    String by = taskDescription.substring(byIndex + "/by".length()).trim();
+                    if (by.isEmpty()) {
+                        throw new BenjiException("Please enter the timing after /by");
+                    }
+
                     Task task = new Deadline(description, by); // create deadline task
                     tasks[idx] = task;
                     idx ++;
@@ -91,10 +101,23 @@ public class Benji {
                                                  "in your event description.");
                     }
                     String description = taskDescription.substring(0, startIndex).trim(); // extract task description
+
+                    if (description.isEmpty()) {
+                        throw new BenjiException("Please enter a description after event");
+                    }
+
                     // extract start date
                     String start = taskDescription.substring(startIndex + "/from".length(), endIndex).trim();
+                    if (start.isEmpty()) {
+                        throw new BenjiException("Please enter start timing after /from");
+                    }
+
                     // extract end date
                     String end = taskDescription.substring(endIndex + "/to".length()).trim();
+                    if (end.isEmpty()) {
+                        throw new BenjiException("Please enter end timing after /to");
+                    }
+
                     Task task = new Event(description, start, end); // create new Event
                     tasks[idx] = task;
                     idx++;
