@@ -134,6 +134,11 @@ public class Benji {
                             throw new BenjiException("Please enter a task number after delete");
                         }
                         int taskNumber = Integer.parseInt(taskDescription);
+                        Task deleted_task  = tasks.get(taskNumber - 1);
+                        tasks.remove(taskNumber);
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println("  " + deleted_task);
+                        System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
 
                     } catch (NumberFormatException e) {
                         // NumberFormatException (commonly referred to by your query) is a runtime error thrown when
