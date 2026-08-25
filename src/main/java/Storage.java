@@ -4,6 +4,8 @@ import java.nio.file.Path; // to locate manipulate and work with file and direct
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Storage {
     // Look for benji.txt inside the data folder.
@@ -56,7 +58,7 @@ public class Storage {
                 if (type.equals("T")) {
                     task = new Todo(parts[2].trim());
                 } else if (type.equals("D")) {
-                    task = new Deadline(parts[2].trim(), parts[3].trim());
+                    task = new Deadline(parts[2].trim(), LocalDate.parse(parts[3].trim()));
                 } else if (type.equals("E")) {
                     task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
                 }

@@ -3,6 +3,9 @@
  */
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 
 public class Benji {
@@ -100,12 +103,24 @@ public class Benji {
                             throw new BenjiException("Please enter the timing after /by");
                         }
 
-                        Task task = new Deadline(description, by); // create deadline task
-                        tasks.add(task);
-                        Storage.saveTasks(tasks);
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println("  " + task);
-                        System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
+
+                        try {
+                            // convert a piece of text (a String) into a real date object
+                            LocalDate byDate = LocalDate.parse(by);
+
+                            Task task = new Deadline(description, byDate);// create deadline task
+                            tasks.add(task);
+                            Storage.saveTasks(tasks);
+
+                            System.out.println("Got it. I've added this task:");
+                            System.out.println("  " + task);
+                            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+
+                        } catch (DateTimeParseException e) {
+                            throw new BenjiException(
+                                    "Please enter the date in yyyy-MM-dd format.");
+                        }
+
                         break;
 
                     }
