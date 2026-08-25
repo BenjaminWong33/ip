@@ -49,16 +49,16 @@ public class Storage {
             List<String> lines = Files.readAllLines(FILE_PATH);
             for (String line : lines) {
                 //  cuts a text line into smaller pieces wherever it finds a vertical bar (|) character
-                String[] parts = line.split(" \\|");
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
+                String[] parts = line.split("\\|");
+                String type = parts[0].trim();
+                boolean isDone = parts[1].trim().equals("1");
                 Task task = null;
                 if (type.equals("T")) {
-                    task = new Todo(parts[2]);
+                    task = new Todo(parts[2].trim());
                 } else if (type.equals("D")) {
-                    task = new Deadline(parts[2], parts[3]);
+                    task = new Deadline(parts[2].trim(), parts[3].trim());
                 } else if (type.equals("E")) {
-                    task = new Event(parts[2], parts[3], parts[4]);
+                    task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
                 }
 
                 if (task != null) {

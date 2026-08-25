@@ -17,7 +17,7 @@ public class Benji {
                 + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 
         Scanner scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user
-        ArrayList<Task> tasks = new ArrayList<>(); // to store all tasks
+        ArrayList<Task> tasks = Storage.loadTasks(); // to store all tasks
 
         System.out.println(line);
         System.out.println(banner);
@@ -51,6 +51,7 @@ public class Benji {
                             }
                             Task task  = tasks.get(taskNumber - 1);
                             task.markAsDone();
+                            Storage.saveTasks(tasks);
                             System.out.println("Splendid! I have marked this task as completed:");
                             System.out.println("  " + task);
                         } catch (NumberFormatException e) {
@@ -62,6 +63,7 @@ public class Benji {
                         int taskNumber = Integer.parseInt(userInput.substring(7).trim());
                         Task task = tasks.get(taskNumber - 1);
                         task.markAsNotDone();
+                        Storage.saveTasks(tasks);
                         System.out.println("OK, I've marked this task as not done yet:");
                         System.out.println("  " + task);
                         break;
@@ -73,6 +75,7 @@ public class Benji {
                         }
                         Task task  = new Todo(taskDescription); // create todo task
                         tasks.add(task);
+                        Storage.saveTasks(tasks);
                         System.out.println("Got it. I've added this task: ");
                         System.out.println("  " + task);
                         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -99,10 +102,12 @@ public class Benji {
 
                         Task task = new Deadline(description, by); // create deadline task
                         tasks.add(task);
+                        Storage.saveTasks(tasks);
                         System.out.println("Got it. I've added this task:");
                         System.out.println("  " + task);
                         System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
                         break;
+
                     }
 
 
@@ -134,7 +139,7 @@ public class Benji {
 
                         Task task = new Event(description, start, end); // create new Event
                         tasks.add(task);
-
+                        Storage.saveTasks(tasks);
 
                         System.out.println("Got it. I've added this task:");
                         System.out.println("  " + task);
@@ -156,6 +161,7 @@ public class Benji {
                             }
                             Task deleted_task  = tasks.get(taskNumber - 1); // get deleted task
                             tasks.remove(taskNumber - 1);
+                            Storage.saveTasks(tasks);
                             System.out.println("Noted. I've removed this task:");
                             System.out.println("  " + deleted_task);
                             System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
