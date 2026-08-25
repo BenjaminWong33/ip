@@ -1,5 +1,5 @@
 public class Parser {
-    private static Command getCommand(String input) { // get command function, map it to enum
+    public static Command getCommand(String input) { // get command function, map it to enum
         String upperInput = input.toUpperCase();
         if (upperInput.equals("BYE")) {
             return Command.BYE;

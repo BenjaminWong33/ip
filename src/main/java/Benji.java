@@ -11,28 +11,30 @@ import java.time.format.DateTimeParseException;
 public class Benji {
     public static void main(String[] args) {
 
-        String line = "____________________________________________________________";
-        String banner = ""
-                + "  BBBBB   EEEEEEE  NN   NN  JJJJJJJ  IIIIIII\n"
-                + "  BB  BB  EE       NNN  NN     JJJ     III  \n"
-                + "  BBBBB   EEEEE    NN N NN     JJJ     III  \n"
-                + "  BB  BB  EE       NN  NNN  JJ JJJ     III  \n"
-                + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
-
-        Scanner scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user
-        ArrayList<Task> tasks = Storage.loadTasks(); // to store all tasks
-
-        System.out.println(line);
-        System.out.println(banner);
-        System.out.println("Hello! I'm BENJI.");
-        System.out.println("What can I do for you?");
-        System.out.println(line);
-
+//        String line = "____________________________________________________________";
+//        String banner = ""
+//                + "  BBBBB   EEEEEEE  NN   NN  JJJJJJJ  IIIIIII\n"
+//                + "  BB  BB  EE       NNN  NN     JJJ     III  \n"
+//                + "  BBBBB   EEEEE    NN N NN     JJJ     III  \n"
+//                + "  BB  BB  EE       NN  NNN  JJ JJJ     III  \n"
+//                + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
+//
+//        Scanner scanner = new Scanner(System.in);
+//        ArrayList<Task> tasks = Storage.loadTasks(); // to store all tasks
+//
+//        System.out.println(line);
+//        System.out.println(banner);
+//        System.out.println("Hello! I'm BENJI.");
+//        System.out.println("What can I do for you?");
+//        System.out.println(line);
+        Ui ui = new Ui();
+        ui.showWelcome();
+        TaskList tasks = new TaskList(Storage.loadTasks());
 
 
         while(true) {
-            String userInput = scanner.nextLine(); // waits for a user to type a full line of text and press Enter.
-            Command command = getCommand(userInput); // map to enum commnad
+            String userInput = ui.readCommand();  // waits for a user to type a full line of text and press Enter.
+            Command command = Parser.getCommand(userInput);// map to enum command
             if (command == Command.BYE) {
                 break;
             }
@@ -174,8 +176,7 @@ public class Benji {
                                 throw new BenjiException("I do apologize, but this task number appears to " +
                                         "be non-existent.");
                             }
-                            Task deleted_task  = tasks.get(taskNumber - 1); // get deleted task
-                            tasks.remove(taskNumber - 1);
+                            Task deleted_task  = tasks.delete(taskNumber - 1); // get deleted task
                             Storage.saveTasks(tasks);
                             System.out.println("Noted. I've removed this task:");
                             System.out.println("  " + deleted_task);
@@ -193,43 +194,21 @@ public class Benji {
 
                 }
             } catch (BenjiException e) {
-                System.out.println(e.getMessage());
+                ui.showError(e.getMessage());
             }
 
 
 
-            System.out.println(line);
         }
 
         System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(line);
+        ui.showLine();
 
 
 
     }
 
-    private static Command getCommand(String input) { // get command function, map it to enum
-        String upperInput = input.toUpperCase();
-        if (upperInput.equals("BYE")) {
-            return Command.BYE;
-        } else if (upperInput.equals("LIST")) {
-            return Command.LIST;
-        } else if (upperInput.startsWith("MARK ")) {
-            return Command.MARK;
-        } else if (upperInput.startsWith("UNMARK ")) {
-            return Command.UNMARK;
-        } else if (upperInput.startsWith("TODO")) {
-            return Command.TODO;
-        } else if (upperInput.startsWith("DEADLINE")) {
-            return Command.DEADLINE;
-        } else if (upperInput.startsWith("EVENT")) {
-            return Command.EVENT;
-        } else if (upperInput.startsWith("DELETE ")) {
-            return Command.DELETE;
-        } else {
-            return Command.UNKNOWN;
-        }
-    }
+
 
 
 }

@@ -12,7 +12,7 @@ public class Ui {
 
     private Scanner scanner;
     public Ui() {
-        scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user
     }
 
     public void showWelcome() {

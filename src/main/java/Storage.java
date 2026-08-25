@@ -13,7 +13,7 @@ public class Storage {
     // Paths.get(...): A tool that joins folder names and file names together correctly.
     private static final Path FILE_PATH = Paths.get("data", "benji.txt");
 
-    public static void saveTasks(ArrayList<Task> tasks) {
+    public static void saveTasks(TaskList tasks) {
         try {
             // FILE_PATH: The full path to your target file (like C:/data/reports/summary.txt).
             // .getParent(): Grabs just the folder path where the file lives (like C:/data/reports).
@@ -21,7 +21,7 @@ public class Storage {
             // If any middle folder is missing, it creates all of them at once. If the folders are already there, it does nothing and does not crash
             Files.createDirectories(FILE_PATH.getParent());
             ArrayList<String> lines = new ArrayList<>();
-            for (Task task : tasks) {
+            for (Task task : tasks.getTasks()) {
                 if (task instanceof Todo) {
                     lines.add("T | " + (task.isDone ? "1" : "0") + " | " + task.description);
                 } else if (task instanceof Deadline) {
