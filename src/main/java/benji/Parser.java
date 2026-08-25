@@ -1,3 +1,5 @@
+package benji;
+
 public class Parser {
     public static Command getCommand(String input) { // get command function, map it to enum
         String upperInput = input.toUpperCase();

@@ -1,3 +1,5 @@
+package benji;
+
 import java.io.IOException;
 import java.nio.file.Files; // provides an efficient way to manipulate files and directories
 import java.nio.file.Path; // to locate manipulate and work with file and directory paths
@@ -5,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Storage {
     // Look for benji.txt inside the data folder.

@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package benji;
+
 import java.util.Scanner;
 
 public class Ui {

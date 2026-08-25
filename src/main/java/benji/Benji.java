@@ -1,10 +1,12 @@
 /**
  * Starts the BENJI chatbot application.
  */
-import java.util.Scanner;
-import java.util.ArrayList;
+package benji;
+import benji.Deadline;
+import benji.Parser;
+import benji.TaskList;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 
@@ -20,7 +22,7 @@ public class Benji {
 //                + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 //
 //        Scanner scanner = new Scanner(System.in);
-//        ArrayList<Task> tasks = Storage.loadTasks(); // to store all tasks
+//        ArrayList<benji.Task> tasks = benji.Storage.loadTasks(); // to store all tasks
 //
 //        System.out.println(line);
 //        System.out.println(banner);
@@ -154,7 +156,7 @@ public class Benji {
                             throw new BenjiException("Please enter end timing after /to");
                         }
 
-                        Task task = new Event(description, start, end); // create new Event
+                        Task task = new Event(description, start, end); // create new benji.Event
                         tasks.add(task);
                         Storage.saveTasks(tasks);
 

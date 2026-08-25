@@ -1,4 +1,4 @@
-
+package benji;
 
 public enum Command {
     BYE,
