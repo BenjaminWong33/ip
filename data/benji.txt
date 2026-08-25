@@ -1,6 +1,6 @@
-E | 0 | Orbital | 6 | 9
+E | 1 | Orbital | 6 | 9
 T | 0 | wed
-T | 0 | thurs lunch
-E | 0 | dinner | 10 | 12
+T | 1 | thurs lunch
+E | 1 | dinner | 10 | 12
 D | 0 | return book | 2019-12-02
-D | 0 | return book | 2019-12-04
+D | 1 | return book | 2019-12-04
