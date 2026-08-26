@@ -9,8 +9,16 @@ import benji.TaskList;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-
+/**
+ * Runs the BENJI chatbot application.
+ *
+ * <p>The application reads commands from the user, process them, and manages the user's task list.</p>
+ */
 public class Benji {
+    /**
+     * Starts the Benji chatbot and process commands by entered by the user.
+     * @param args command-line arguments passed to the application.
+     */
     public static void main(String[] args) {
 
 //        String line = "____________________________________________________________";
@@ -34,14 +42,14 @@ public class Benji {
         TaskList tasks = new TaskList(Storage.loadTasks());
 
 
-        while(true) {
+        while (true) {
             String userInput = ui.readCommand();  // waits for a user to type a full line of text and press Enter.
             Command command = Parser.getCommand(userInput);// map to enum command
             if (command == Command.BYE) {
                 break;
             }
             try {
-                switch(command) {
+                switch (command) {
                     case LIST: {
                         System.out.println("Here are the tasks in your list:");
                         for (int i = 0; i < tasks.size(); i++) { // revealing all the tasks in the tasks array
