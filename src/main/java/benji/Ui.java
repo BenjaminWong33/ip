@@ -11,6 +11,7 @@ public class Ui {
             + "  BB  BB  EE       NN  NNN  JJ JJJ     III  \n"
             + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 
+
     private Scanner scanner;
     public Ui() {
         scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user

@@ -9,52 +9,48 @@ import benji.TaskList;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-
+/**
+ * Runs the BENJI chatbot application.
+ *
+ * <p>The application reads commands from the user, process them, and manages the user's task list.</p>
+ */
 public class Benji {
+    /**
+     * Starts the Benji chatbot and process commands by entered by the user.
+     * @param args command-line arguments passed to the application.
+     */
     public static void main(String[] args) {
 
-//        String line = "____________________________________________________________";
-//        String banner = ""
-//                + "  BBBBB   EEEEEEE  NN   NN  JJJJJJJ  IIIIIII\n"
-//                + "  BB  BB  EE       NNN  NN     JJJ     III  \n"
-//                + "  BBBBB   EEEEE    NN N NN     JJJ     III  \n"
-//                + "  BB  BB  EE       NN  NNN  JJ JJJ     III  \n"
-//                + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
-//
-//        Scanner scanner = new Scanner(System.in);
-//        ArrayList<benji.Task> tasks = benji.Storage.loadTasks(); // to store all tasks
-//
-//        System.out.println(line);
-//        System.out.println(banner);
-//        System.out.println("Hello! I'm BENJI.");
-//        System.out.println("What can I do for you?");
-//        System.out.println(line);
         Ui ui = new Ui();
         ui.showWelcome();
+
         TaskList tasks = new TaskList(Storage.loadTasks());
 
-
-        while(true) {
-            String userInput = ui.readCommand();  // waits for a user to type a full line of text and press Enter.
-            Command command = Parser.getCommand(userInput);// map to enum command
+        while (true) {
+            // waits for a user to type a full line of text and press Enter.
+            String userInput = ui.readCommand();
+            // map to enum command
+            Command command = Parser.getCommand(userInput);
             if (command == Command.BYE) {
                 break;
             }
             try {
-                switch(command) {
+                switch (command) {
                     case LIST: {
                         System.out.println("Here are the tasks in your list:");
-                        for (int i = 0; i < tasks.size(); i++) { // revealing all the tasks in the tasks array
+                        // revealing all the tasks in the tasks array
+                        for (int i = 0; i < tasks.size(); i++) {
                             System.out.println((i + 1) + "." + tasks.get(i));
                         }
                         break;
                     }
-
                     case MARK: {
                         try {
                             int taskNumber = Integer.parseInt(userInput.substring(5).trim());
-                            if (taskNumber < 1 || taskNumber > tasks.size()) { // handle error for numbers that are out of range
-                                throw new BenjiException("I do apologize, but this task number appears to be non-existent.");
+                            // handle error for numbers that are out of range
+                            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                                throw new BenjiException("I do apologize, but this task number "
+                                        + "appears to be non-existent.");
                             }
                             Task task  = tasks.get(taskNumber - 1);
                             task.markAsDone();
@@ -76,11 +72,13 @@ public class Benji {
                         break;
                     }
                     case TODO: {
-                        String taskDescription = userInput.substring("todo".length()).trim(); // filter todo
+                        // filter todo
+                        String taskDescription = userInput.substring("todo".length()).trim();
                         if (taskDescription.isEmpty()) {
                             throw new BenjiException("Please enter a description after todo");
                         }
-                        Task task  = new Todo(taskDescription); // create todo task
+                        // create todo task
+                        Task task  = new Todo(taskDescription);
                         tasks.add(task);
                         Storage.saveTasks(tasks);
                         System.out.println("Got it. I've added this task: ");
@@ -89,14 +87,18 @@ public class Benji {
                         break;
                     }
                     case DEADLINE: {
-                        String taskDescription = userInput.substring("deadline".length()).trim(); // filer deadline
+                        // filer deadline
+                        String taskDescription = userInput.substring("deadline".length()).trim();
                         // .indexOf(...) finds the start index of the phrase in the string
                         int byIndex = taskDescription.indexOf("/by");
 
                         if (byIndex == -1) {
-                            throw new BenjiException("Please ensure '/by TIME' is included in your deadline description.");
+                            throw new BenjiException("Please ensure '/by TIME' is " +
+                                    "included in your deadline description.");
                         }
-                        String description = taskDescription.substring(0, byIndex).trim(); // extract out description
+                        // extract out description
+                        String description = taskDescription.substring(0, byIndex).trim();
+
                         if (description.isEmpty()) {
                             throw new BenjiException("Please enter a description after deadline");
                         }
@@ -106,7 +108,6 @@ public class Benji {
                         if (by.isEmpty()) {
                             throw new BenjiException("Please enter the timing after /by");
                         }
-
 
                         try {
                             // convert a piece of text (a String) into a real date object
@@ -124,21 +125,21 @@ public class Benji {
                             throw new BenjiException(
                                     "Please enter the date in yyyy-MM-dd format.");
                         }
-
                         break;
-
                     }
-
-
                     case EVENT: {
                         String taskDescription = userInput.substring("event".length()).trim();
-                        int startIndex = taskDescription.indexOf("/from"); // get starting index of "/from"
-                        int endIndex = taskDescription.indexOf("/to");  //  get starting index of "/to"
-                        if (startIndex == -1 || endIndex == -1) { // check that both /from and /to are in the command
+                        // get starting index of "/from"
+                        int startIndex = taskDescription.indexOf("/from");
+                        //  get starting index of "/to"
+                        int endIndex = taskDescription.indexOf("/to");
+                        // check that both /from and /to are in the command
+                        if (startIndex == -1 || endIndex == -1) {
                             throw new BenjiException("Please ensure both '/from' and '/to' are included" +
                                     "in your event description.");
                         }
-                        String description = taskDescription.substring(0, startIndex).trim(); // extract task description
+                        // extract task description
+                        String description = taskDescription.substring(0, startIndex).trim();
 
                         if (description.isEmpty()) {
                             throw new BenjiException("Please enter a description after event");
@@ -193,24 +194,12 @@ public class Benji {
                     }
                     case UNKNOWN:
                         throw new BenjiException("I beg your pardon, I am afraid I do not recognise this command.");
-
                 }
             } catch (BenjiException e) {
                 ui.showError(e.getMessage());
             }
-
-
-
         }
-
         System.out.println("Bye. Hope to see you again soon!");
         ui.showLine();
-
-
-
     }
-
-
-
-
 }

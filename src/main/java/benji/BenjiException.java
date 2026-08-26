@@ -1,8 +1,12 @@
 package benji;
 
 public class BenjiException extends Exception {
-    public BenjiException(String message) {
 
+    /**
+     * Creates the Benji exception.
+     * @param message
+     */
+    public BenjiException(String message) {
         super(message);
     }
 }
