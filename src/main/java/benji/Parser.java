@@ -19,14 +19,16 @@ public class Parser {
             return Command.MARK;
         } else if (upperInput.startsWith("UNMARK ")) {
             return Command.UNMARK;
-        } else if (upperInput.startsWith("TODO")) {
+        } else if (upperInput.startsWith("TODO ")) {
             return Command.TODO;
-        } else if (upperInput.startsWith("DEADLINE")) {
+        } else if (upperInput.startsWith("DEADLINE ")) {
             return Command.DEADLINE;
-        } else if (upperInput.startsWith("EVENT")) {
+        } else if (upperInput.startsWith("EVENT ")) {
             return Command.EVENT;
         } else if (upperInput.startsWith("DELETE ")) {
             return Command.DELETE;
+        } else if (upperInput.startsWith("FIND ")) {
+            return Command.FIND;
         } else {
             return Command.UNKNOWN;
         }

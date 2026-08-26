@@ -1,4 +1,4 @@
 T | 0 | wed
 E | 1 | dinner | 10 | 12
 D | 0 | return book | 2019-12-04
-T | 0 | now
+T | 1 | now

@@ -166,8 +166,6 @@ public class Benji {
                         System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
                         break;
                     }
-
-
                     case DELETE: {
                         try {
                             String taskDescription = userInput.substring("delete".length()).trim();
@@ -189,6 +187,23 @@ public class Benji {
                             // NumberFormatException (commonly referred to by your query) is a runtime error thrown when
                             // code tries to convert a text string into a number, but the string has an invalid format.
                             throw new BenjiException("Please enter a whole task number after delete.");
+                        }
+                        break;
+                    }
+                    case FIND: {
+                        String taskDescription = userInput.substring("find".length()).trim();
+
+                        if (taskDescription.isEmpty()) {
+                            throw new BenjiException("Please enter a keyword after find.");
+                        }
+                        System.out.println("Here are the matching tasks in your list:");
+                        int counter = 0;
+                        for (int i = 0; i < tasks.size(); i++) {
+                            // filtering task that contains the task description
+                            if (tasks.get(i).toString().contains(taskDescription)) {
+                                System.out.println((counter + 1) + "." + tasks.get(i));
+                                counter++;
+                            }
                         }
                         break;
                     }
