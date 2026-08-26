@@ -8,12 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
+/**
+ * Handles saving and loading tasks from a file.
+ *
+ * <p>Tasks are stored in the application's data folder so that
+ * they can be restored when the application is started again.</p>
+ */
 public class Storage {
     // Look for benji.txt inside the data folder.
     // Path: A Java object that represents a file or folder location on your computer.
     // Paths.get(...): A tool that joins folder names and file names together correctly.
     private static final Path FILE_PATH = Paths.get("data", "benji.txt");
 
+    /**
+     * Saves all tasks in the task list to the storage file.
+     *
+     * @param tasks the list of tasks to save
+     */
     public static void saveTasks(TaskList tasks) {
         try {
             // FILE_PATH: The full path to your target file (like C:/data/reports/summary.txt).
@@ -43,6 +54,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads previously saved tasks from the storage file.
+     *
+     * @return an {@link ArrayList} containing the loaded tasks;
+     * an empty list if hte storage file does not exist
+     */
     public static ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         if (!Files.exists(FILE_PATH)) {

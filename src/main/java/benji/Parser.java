@@ -1,6 +1,14 @@
 package benji;
 
+/**
+ * Parses user input and identifies the corresponding command
+ */
 public class Parser {
+    /**
+     * Converts a user command into the corresponding {@link Command}
+     * @param input the command entered by the user
+     * @return the {@link Command} represents by the input
+     */
     public static Command getCommand(String input) { // get command function, map it to enum
         String upperInput = input.toUpperCase();
         if (upperInput.equals("BYE")) {
