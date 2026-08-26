@@ -26,25 +26,26 @@ public class Storage {
      * @param tasks the list of tasks to save
      */
     public static void saveTasks(TaskList tasks) {
+
         try {
             // FILE_PATH: The full path to your target file (like C:/data/reports/summary.txt).
             // .getParent(): Grabs just the folder path where the file lives (like C:/data/reports).
             // Files.createDirectories(...): Builds those folders on your computer.
             // If any middle folder is missing, it creates all of them at once. If the folders are already there, it does nothing and does not crash
             Files.createDirectories(FILE_PATH.getParent());
+
             ArrayList<String> lines = new ArrayList<>();
+
             for (Task task : tasks.getTasks()) {
                 if (task instanceof Todo) {
                     lines.add("T | " + (task.isDone ? "1" : "0") + " | " + task.description);
                 } else if (task instanceof Deadline) {
                     Deadline deadline = (Deadline) task;
-                    lines.add("D | " + (task.isDone ? "1" : "0") + " | " + task.description
-                                                                 + " | " + deadline.by);
+                    lines.add("D | " + (task.isDone ? "1" : "0") + " | " + task.description + " | " + deadline.by);
                 } else if (task instanceof Event) {
                     Event event = (Event) task;
-                    lines.add("E | " + (task.isDone ? "1" : "0") + " | " + task.description
-                                                                 + " | " + event.start
-                                                                 + " | " + event.end);
+                    lines.add("E | " + (task.isDone ? "1" : "0") + " | " + task.description + " | " + event.start
+                            + " | " + event.end);
                 }
             }
             Files.write(FILE_PATH, lines); // write and overwrite content in a specific file
@@ -62,9 +63,11 @@ public class Storage {
      */
     public static ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
+
         if (!Files.exists(FILE_PATH)) {
             return tasks;
         }
+
         try {
             List<String> lines = Files.readAllLines(FILE_PATH);
             for (String line : lines) {

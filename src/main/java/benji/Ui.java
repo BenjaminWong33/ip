@@ -17,6 +17,7 @@ public class Ui {
             + "  BB  BB  EE       NN  NNN  JJ JJJ     III  \n"
             + "  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII\n";
 
+
     private Scanner scanner;
 
     /**
