@@ -3,216 +3,225 @@
  */
 package benji;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 /**
- * Runs the BENJI chatbot application.
+ * Processes user commands and manages the user's task list.
  *
- * <p>The application reads commands from the user, process them, and manages the user's task list.</p>
+ * <p>The {@link #getResponse(String)} method allows both the console UI and a future GUI
+ * to use the same chatbot logic.</p>
  */
 public class Benji {
+    private final TaskList tasks;
+
+    /** Creates BENJI and loads tasks saved from earlier sessions. */
+    public Benji() {
+        tasks = new TaskList(Storage.loadTasks());
+    }
+
     /**
-     * Starts the Benji chatbot and process commands by entered by the user.
-     * @param args command-line arguments passed to the application.
+     * Starts BENJI in the console.
+     *
+     * @param args command-line arguments passed to the application
      */
     public static void main(String[] args) {
-
         Ui ui = new Ui();
+        Benji benji = new Benji();
         ui.showWelcome();
 
-        TaskList tasks = new TaskList(Storage.loadTasks());
-
         while (true) {
-            // waits for a user to type a full line of text and press Enter.
             String userInput = ui.readCommand();
-            // map to enum command
-            Command command = Parser.getCommand(userInput);
-            if (command == Command.BYE) {
+            System.out.println(benji.getResponse(userInput));
+
+            if (Parser.getCommand(userInput) == Command.BYE) {
                 break;
             }
-            try {
-                switch (command) {
-                    case LIST: {
-                        System.out.println("Here are the tasks in your list:");
-                        // revealing all the tasks in the tasks array
-                        for (int i = 0; i < tasks.size(); i++) {
-                            System.out.println((i + 1) + "." + tasks.get(i));
-                        }
-                        break;
-                    }
-                    case MARK: {
-                        try {
-                            int taskNumber = Integer.parseInt(userInput.substring(5).trim());
-                            // handle error for numbers that are out of range
-                            if (taskNumber < 1 || taskNumber > tasks.size()) {
-                                throw new BenjiException("I do apologize, but this task number "
-                                        + "appears to be non-existent.");
-                            }
-                            Task task = tasks.get(taskNumber - 1);
-                            task.markAsDone();
-                            Storage.saveTasks(tasks);
-                            System.out.println("Splendid! I have marked this task as completed:");
-                            System.out.println("  " + task);
-                        } catch (NumberFormatException e) {
-                            throw new BenjiException("Please enter a whole task number after mark.");
-                        }
-                        break;
-                    }
-                    case UNMARK: {
-                        int taskNumber = Integer.parseInt(userInput.substring(7).trim());
-                        Task task = tasks.get(taskNumber - 1);
-                        task.markAsNotDone();
-                        Storage.saveTasks(tasks);
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  " + task);
-                        break;
-                    }
-                    case TODO: {
-                        // filter todo
-                        String taskDescription = userInput.substring("todo".length()).trim();
-                        if (taskDescription.isEmpty()) {
-                            throw new BenjiException("Please enter a description after todo");
-                        }
-                        // create todo task
-                        Task task = new Todo(taskDescription);
-                        tasks.add(task);
-                        Storage.saveTasks(tasks);
-                        System.out.println("Got it. I've added this task: ");
-                        System.out.println("  " + task);
-                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                        break;
-                    }
-                    case DEADLINE: {
-                        // filer deadline
-                        String taskDescription = userInput.substring("deadline".length()).trim();
-                        // .indexOf(...) finds the start index of the phrase in the string
-                        int byIndex = taskDescription.indexOf("/by");
+        }
+    }
 
-                        if (byIndex == -1) {
-                            throw new BenjiException("Please ensure '/by TIME' is "
-                                    + "included in your deadline description.");
-                        }
-                        // extract out description
-                        String description = taskDescription.substring(0, byIndex).trim();
+    /**
+     * Processes one command and returns BENJI's reply.
+     *
+     * @param userInput command entered by the user
+     * @return BENJI's response to the command
+     */
+    public String getResponse(String userInput) {
+        Command command = Parser.getCommand(userInput);
 
-                        if (description.isEmpty()) {
-                            throw new BenjiException("Please enter a description after deadline");
-                        }
+        try {
+            switch (command) {
+                case BYE:
+                    return "Bye. Hope to see you again soon!";
+                case LIST:
+                    return listTasks();
+                case MARK:
+                    return updateTaskStatus(userInput, true);
+                case UNMARK:
+                    return updateTaskStatus(userInput, false);
+                case TODO:
+                    return addTodo(userInput);
+                case DEADLINE:
+                    return addDeadline(userInput);
+                case EVENT:
+                    return addEvent(userInput);
+                case DELETE:
+                    return deleteTask(userInput);
+                case FIND:
+                    return findTasks(userInput);
+                default:
+                    throw new BenjiException("I beg your pardon, I am afraid I do not recognise this command.");
+            }
+        } catch (BenjiException e) {
+            return e.getMessage();
+        }
+    }
 
-                        // extract out timing
-                        String by = taskDescription.substring(byIndex + "/by".length()).trim();
-                        if (by.isEmpty()) {
-                            throw new BenjiException("Please enter the timing after /by");
-                        }
+    /** Returns a numbered list of all tasks. */
+    private String listTasks() {
+        StringBuilder reply = new StringBuilder("Here are the tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            reply.append("\n").append(i + 1).append(".").append(tasks.get(i));
+        }
+        return reply.toString();
+    }
 
-                        try {
-                            // convert a piece of text (a String) into a real date object
-                            LocalDate byDate = LocalDate.parse(by);
+    /** Marks or unmarks a task and saves the updated list. */
+    private String updateTaskStatus(String userInput, boolean isDone) throws BenjiException {
+        String commandWord = isDone ? "mark" : "unmark";
+        try {
+            int taskNumber = Integer.parseInt(userInput.substring(commandWord.length()).trim());
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                throw new BenjiException("I do apologize, but this task number appears to be non-existent.");
+            }
 
-                            Task task = new Deadline(description, byDate); // create deadline task
-                            tasks.add(task);
-                            Storage.saveTasks(tasks);
+            Task task = tasks.get(taskNumber - 1);
+            if (isDone) {
+                task.markAsDone();
+                Storage.saveTasks(tasks);
+                return "Splendid! I have marked this task as completed:\n  " + task;
+            }
 
-                            System.out.println("Got it. I've added this task:");
-                            System.out.println("  " + task);
-                            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            task.markAsNotDone();
+            Storage.saveTasks(tasks);
+            return "OK, I've marked this task as not done yet:\n  " + task;
+        } catch (NumberFormatException e) {
+            throw new BenjiException("Please enter a whole task number after " + commandWord + ".");
+        }
+    }
 
-                        } catch (DateTimeParseException e) {
-                            throw new BenjiException(
-                                    "Please enter the date in yyyy-MM-dd format.");
-                        }
-                        break;
-                    }
-                    case EVENT: {
-                        String taskDescription = userInput.substring("event".length()).trim();
-                        // get starting index of "/from"
-                        int startIndex = taskDescription.indexOf("/from");
-                        //  get starting index of "/to"
-                        int endIndex = taskDescription.indexOf("/to");
-                        // check that both /from and /to are in the command
-                        if (startIndex == -1 || endIndex == -1) {
-                            throw new BenjiException("Please ensure both '/from' and '/to' are included"
-                                    + "in your event description.");
-                        }
-                        // extract task description
-                        String description = taskDescription.substring(0, startIndex).trim();
+    /** Adds a todo task and saves the updated list. */
+    private String addTodo(String userInput) throws BenjiException {
+        String description = userInput.substring("todo".length()).trim();
+        if (description.isEmpty()) {
+            throw new BenjiException("Please enter a description after todo");
+        }
 
-                        if (description.isEmpty()) {
-                            throw new BenjiException("Please enter a description after event");
-                        }
+        Task task = new Todo(description);
+        tasks.add(task);
+        Storage.saveTasks(tasks);
+        return "Got it. I've added this task:\n  " + task + "\nNow you have "
+                + tasks.size() + " tasks in the list.";
+    }
 
-                        // extract start date
-                        String start = taskDescription.substring(startIndex + "/from".length(), endIndex).trim();
-                        if (start.isEmpty()) {
-                            throw new BenjiException("Please enter start timing after /from");
-                        }
+    /** Adds a deadline task and saves the updated list. */
+    private String addDeadline(String userInput) throws BenjiException {
+        String taskDescription = userInput.substring("deadline".length()).trim();
+        int byIndex = taskDescription.indexOf("/by");
+        if (byIndex == -1) {
+            throw new BenjiException("Please ensure '/by TIME' is included in your deadline description.");
+        }
 
-                        // extract end date
-                        String end = taskDescription.substring(endIndex + "/to".length()).trim();
-                        if (end.isEmpty()) {
-                            throw new BenjiException("Please enter end timing after /to");
-                        }
+        String description = taskDescription.substring(0, byIndex).trim();
+        if (description.isEmpty()) {
+            throw new BenjiException("Please enter a description after deadline");
+        }
 
-                        Task task = new Event(description, start, end); // create new benji.Event
-                        tasks.add(task);
-                        Storage.saveTasks(tasks);
+        String by = taskDescription.substring(byIndex + "/by".length()).trim();
+        if (by.isEmpty()) {
+            throw new BenjiException("Please enter the timing after /by");
+        }
 
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println("  " + task);
-                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                        break;
-                    }
-                    case DELETE: {
-                        try {
-                            String taskDescription = userInput.substring("delete".length()).trim();
-                            if (taskDescription.isEmpty()) {
-                                throw new BenjiException("Please enter a task number after delete");
-                            }
-                            int taskNumber = Integer.parseInt(taskDescription.trim());
-                            if (taskNumber < 1 || taskNumber > tasks.size()) { // check for invalid task number
-                                throw new BenjiException("I do apologize, but this task number appears to "
-                                        + "be non-existent.");
-                            }
-                            Task deletedTask = tasks.delete(taskNumber - 1); // get deleted task
-                            Storage.saveTasks(tasks);
-                            System.out.println("Noted. I've removed this task:");
-                            System.out.println("  " + deletedTask);
-                            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        try {
+            Task task = new Deadline(description, LocalDate.parse(by));
+            tasks.add(task);
+            Storage.saveTasks(tasks);
+            return "Got it. I've added this task:\n  " + task + "\nNow you have "
+                    + tasks.size() + " tasks in the list.";
+        } catch (DateTimeParseException e) {
+            throw new BenjiException("Please enter the date in yyyy-MM-dd format.");
+        }
+    }
 
-                        } catch (NumberFormatException e) {
-                            // NumberFormatException (commonly referred to by your query) is a runtime error thrown when
-                            // code tries to convert a text string into a number, but the string has an invalid format.
-                            throw new BenjiException("Please enter a whole task number after delete.");
-                        }
-                        break;
-                    }
-                    case FIND: {
-                        String taskDescription = userInput.substring("find".length()).trim();
+    /** Adds an event task and saves the updated list. */
+    private String addEvent(String userInput) throws BenjiException {
+        String taskDescription = userInput.substring("event".length()).trim();
+        int startIndex = taskDescription.indexOf("/from");
+        int endIndex = taskDescription.indexOf("/to");
+        if (startIndex == -1 || endIndex == -1) {
+            throw new BenjiException("Please ensure both '/from' and '/to' are included"
+                    + " in your event description.");
+        }
 
-                        if (taskDescription.isEmpty()) {
-                            throw new BenjiException("Please enter a keyword after find.");
-                        }
-                        System.out.println("Here are the matching tasks in your list:");
-                        int counter = 0;
-                        for (int i = 0; i < tasks.size(); i++) {
-                            // filtering task that contains the task description
-                            if (tasks.get(i).toString().contains(taskDescription)) {
-                                System.out.println((counter + 1) + "." + tasks.get(i));
-                                counter++;
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                        throw new BenjiException("I beg your pardon, I am afraid I do not recognise this command.");
-                }
-            } catch (BenjiException e) {
-                ui.showError(e.getMessage());
+        String description = taskDescription.substring(0, startIndex).trim();
+        if (description.isEmpty()) {
+            throw new BenjiException("Please enter a description after event");
+        }
+
+        String start = taskDescription.substring(startIndex + "/from".length(), endIndex).trim();
+        if (start.isEmpty()) {
+            throw new BenjiException("Please enter start timing after /from");
+        }
+
+        String end = taskDescription.substring(endIndex + "/to".length()).trim();
+        if (end.isEmpty()) {
+            throw new BenjiException("Please enter end timing after /to");
+        }
+
+        Task task = new Event(description, start, end);
+        tasks.add(task);
+        Storage.saveTasks(tasks);
+        return "Got it. I've added this task:\n  " + task + "\nNow you have "
+                + tasks.size() + " tasks in the list.";
+    }
+
+    /** Deletes a task and saves the updated list. */
+    private String deleteTask(String userInput) throws BenjiException {
+        try {
+            String taskNumberText = userInput.substring("delete".length()).trim();
+            if (taskNumberText.isEmpty()) {
+                throw new BenjiException("Please enter a task number after delete");
+            }
+
+            int taskNumber = Integer.parseInt(taskNumberText);
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                throw new BenjiException("I do apologize, but this task number appears to be non-existent.");
+            }
+
+            Task deletedTask = tasks.delete(taskNumber - 1);
+            Storage.saveTasks(tasks);
+            return "Noted. I've removed this task:\n  " + deletedTask + "\nNow you have "
+                    + tasks.size() + " tasks in the list.";
+        } catch (NumberFormatException e) {
+            throw new BenjiException("Please enter a whole task number after delete.");
+        }
+    }
+
+    /** Finds tasks whose display text contains the supplied keyword. */
+    private String findTasks(String userInput) throws BenjiException {
+        String keyword = userInput.substring("find".length()).trim();
+        if (keyword.isEmpty()) {
+            throw new BenjiException("Please enter a keyword after find.");
+        }
+
+        StringBuilder reply = new StringBuilder("Here are the matching tasks in your list:");
+        int counter = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).toString().contains(keyword)) {
+                counter++;
+                reply.append("\n").append(counter).append(".").append(tasks.get(i));
             }
         }
-        System.out.println("Bye. Hope to see you again soon!");
-        ui.showLine();
+        return reply.toString();
     }
 }
