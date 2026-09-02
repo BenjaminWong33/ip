@@ -7,8 +7,8 @@ import java.time.format.DateTimeFormatter;
  * Represents Deadline, a subclass of the Task class.
  */
 public class Deadline extends Task {
-    protected LocalDate by;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    protected LocalDate by;
 
     /**
      * Creates a deadline task with a description and deadline date.
@@ -16,8 +16,8 @@ public class Deadline extends Task {
      * @param by description of the date bby which the task should be completed.
      */
     public Deadline(String description, LocalDate by) {
-        this.by = by;
         super(description);
+        this.by = by;
     }
 
     @Override
