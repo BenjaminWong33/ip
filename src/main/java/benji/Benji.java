@@ -2,9 +2,7 @@
  * Starts the BENJI chatbot application.
  */
 package benji;
-import benji.Deadline;
-import benji.Parser;
-import benji.TaskList;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -52,7 +50,7 @@ public class Benji {
                                 throw new BenjiException("I do apologize, but this task number "
                                         + "appears to be non-existent.");
                             }
-                            Task task  = tasks.get(taskNumber - 1);
+                            Task task = tasks.get(taskNumber - 1);
                             task.markAsDone();
                             Storage.saveTasks(tasks);
                             System.out.println("Splendid! I have marked this task as completed:");
@@ -78,7 +76,7 @@ public class Benji {
                             throw new BenjiException("Please enter a description after todo");
                         }
                         // create todo task
-                        Task task  = new Todo(taskDescription);
+                        Task task = new Todo(taskDescription);
                         tasks.add(task);
                         Storage.saveTasks(tasks);
                         System.out.println("Got it. I've added this task: ");
@@ -93,8 +91,8 @@ public class Benji {
                         int byIndex = taskDescription.indexOf("/by");
 
                         if (byIndex == -1) {
-                            throw new BenjiException("Please ensure '/by TIME' is " +
-                                    "included in your deadline description.");
+                            throw new BenjiException("Please ensure '/by TIME' is "
+                                    + "included in your deadline description.");
                         }
                         // extract out description
                         String description = taskDescription.substring(0, byIndex).trim();
@@ -113,7 +111,7 @@ public class Benji {
                             // convert a piece of text (a String) into a real date object
                             LocalDate byDate = LocalDate.parse(by);
 
-                            Task task = new Deadline(description, byDate);// create deadline task
+                            Task task = new Deadline(description, byDate); // create deadline task
                             tasks.add(task);
                             Storage.saveTasks(tasks);
 
@@ -135,8 +133,8 @@ public class Benji {
                         int endIndex = taskDescription.indexOf("/to");
                         // check that both /from and /to are in the command
                         if (startIndex == -1 || endIndex == -1) {
-                            throw new BenjiException("Please ensure both '/from' and '/to' are included" +
-                                    "in your event description.");
+                            throw new BenjiException("Please ensure both '/from' and '/to' are included"
+                                    + "in your event description.");
                         }
                         // extract task description
                         String description = taskDescription.substring(0, startIndex).trim();
@@ -163,7 +161,7 @@ public class Benji {
 
                         System.out.println("Got it. I've added this task:");
                         System.out.println("  " + task);
-                        System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                         break;
                     }
                     case DELETE: {
@@ -174,14 +172,14 @@ public class Benji {
                             }
                             int taskNumber = Integer.parseInt(taskDescription.trim());
                             if (taskNumber < 1 || taskNumber > tasks.size()) { // check for invalid task number
-                                throw new BenjiException("I do apologize, but this task number appears to " +
-                                        "be non-existent.");
+                                throw new BenjiException("I do apologize, but this task number appears to "
+                                        + "be non-existent.");
                             }
-                            Task deleted_task  = tasks.delete(taskNumber - 1); // get deleted task
+                            Task deletedTask = tasks.delete(taskNumber - 1); // get deleted task
                             Storage.saveTasks(tasks);
                             System.out.println("Noted. I've removed this task:");
-                            System.out.println("  " + deleted_task);
-                            System.out.println("Now you have " + tasks.size() +  " tasks in the list.");
+                            System.out.println("  " + deletedTask);
+                            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
 
                         } catch (NumberFormatException e) {
                             // NumberFormatException (commonly referred to by your query) is a runtime error thrown when
@@ -207,7 +205,7 @@ public class Benji {
                         }
                         break;
                     }
-                    case UNKNOWN:
+                    default:
                         throw new BenjiException("I beg your pardon, I am afraid I do not recognise this command.");
                 }
             } catch (BenjiException e) {

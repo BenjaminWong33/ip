@@ -1,12 +1,12 @@
 package benji;
 
 import java.io.IOException;
-import java.nio.file.Files; // provides an efficient way to manipulate files and directories
-import java.nio.file.Path; // to locate manipulate and work with file and directory paths
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
 
 /**
  * Handles saving and loading tasks from a file.
@@ -31,7 +31,8 @@ public class Storage {
             // FILE_PATH: The full path to your target file (like C:/data/reports/summary.txt).
             // .getParent(): Grabs just the folder path where the file lives (like C:/data/reports).
             // Files.createDirectories(...): Builds those folders on your computer.
-            // If any middle folder is missing, it creates all of them at once. If the folders are already there, it does nothing and does not crash
+            // If any middle folder is missing, it creates all of them at once. If the folders are already there,
+            //  it does nothing and does not crash
             Files.createDirectories(FILE_PATH.getParent());
 
             ArrayList<String> lines = new ArrayList<>();
@@ -59,7 +60,7 @@ public class Storage {
      * Loads previously saved tasks from the storage file.
      *
      * @return an {@link ArrayList} containing the loaded tasks;
-     * an empty list if hte storage file does not exist
+     *         an empty list if the storage file does not exist
      */
     public static ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -91,7 +92,7 @@ public class Storage {
                     tasks.add(task);
                 }
             }
-        } catch (IOException e ) {
+        } catch (IOException e) {
             System.out.println("Sorry, i couldn't load your tasks");
         }
         return tasks;

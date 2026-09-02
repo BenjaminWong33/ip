@@ -9,8 +9,8 @@ import java.util.Scanner;
  * reading commands entered by the user.</p>
  */
 public class Ui {
-    String line = "____________________________________________________________";
-    String banner = ""
+    private String line = "____________________________________________________________";
+    private String banner = ""
             + "  BBBBB   EEEEEEE  NN   NN  JJJJJJJ  IIIIIII\n"
             + "  BB  BB  EE       NNN  NN     JJJ     III  \n"
             + "  BBBBB   EEEEE    NN N NN     JJJ     III  \n"
