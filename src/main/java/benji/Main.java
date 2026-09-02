@@ -16,6 +16,8 @@ import javafx.stage.Stage;
  * Creates the JavaFX application window
  */
 public class Main extends Application {
+    private final Benji benji = new Benji();
+
     private final Image userImage = new Image(
             getClass().getResourceAsStream("/images/user.png"));
     private final Image benjiImage = new Image(
@@ -38,10 +40,20 @@ public class Main extends Application {
         userInput.setPromptText("Type a command here...");
 
         Button sendButton = new Button("Send");
-        DialogBox greeting = new DialogBox(
-                "Hello! I am BENJI. What can I do for you?",
-                benjiImage);
-        dialogContainer.getChildren().add(greeting);
+
+        dialogContainer.getChildren().add(
+                DialogBox.getBenjiDialog(
+                        "Hello! I am BENJI. What can I do for you?",
+                        benjiImage));
+
+        sendButton.setOnAction(event ->
+                handleUserInput(userInput, dialogContainer));
+
+        userInput.setOnAction(event ->
+                handleUserInput(userInput, dialogContainer));
+
+        dialogContainer.heightProperty().addListener(
+                observable -> scrollPane.setVvalue(1.0));
 
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
@@ -52,6 +64,29 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * Sends the user's command to BENJI and displays both messages.
+     *
+     * @param userInput field containing the user's command
+     * @param dialogContainer container holding the conversation
+     */
+    private void handleUserInput(TextField userInput, VBox dialogContainer) {
+        String userText = userInput.getText().trim();
+
+        if (userText.isEmpty()) {
+            return;
+        }
+
+        String benjiText = benji.getResponse(userText);
+
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getBenjiDialog(benjiText, benjiImage));
+
+        userInput.clear();
+    }
+
 
     /**
      * Sets the size and position of the controls in the application window.
