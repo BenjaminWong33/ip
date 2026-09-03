@@ -41,8 +41,8 @@ public class DialogBox extends HBox {
         message.setStyle(USER_BUBBLE_STYLE);
 
         ImageView avatar = new ImageView(image);
-        avatar.setFitHeight(50);
-        avatar.setFitWidth(50);
+        avatar.setFitHeight(70);
+        avatar.setFitWidth(70);
         avatar.setPreserveRatio(true);
 
         setAlignment(Pos.TOP_RIGHT);
@@ -55,7 +55,7 @@ public class DialogBox extends HBox {
      */
     private void flip() {
         ObservableList<Node> children = FXCollections.observableArrayList(getChildren());
-        FXCollections.reverse(children);
+        FXCollections.reverse(children); // flip direction
         getChildren().setAll(children);
 
         setAlignment(Pos.TOP_LEFT);
