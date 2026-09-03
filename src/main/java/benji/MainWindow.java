@@ -30,10 +30,10 @@ public class MainWindow {
      */
     @FXML
     public void initialize() {
-        dialogContainer.getChildren().add(
-                DialogBox.getBenjiDialog(
-                        "Hello! I am BENJI. What can I do for you?",
-                        benjiImage));
+        addDialogBoxes(DialogBox.getBenjiDialog(
+                "Hello! I am BENJI. What can I do for you?",
+                benjiImage));
+
 
         dialogContainer.heightProperty().addListener(
                 observable -> scrollPane.setVvalue(1.0));
@@ -41,6 +41,10 @@ public class MainWindow {
 
     public void setBenji(Benji benji) {
         this.benji = benji;
+    }
+
+    private void addDialogBoxes(DialogBox...dialogBoxes) {
+        dialogContainer.getChildren().addAll(dialogBoxes);
     }
 
     /**
@@ -56,7 +60,7 @@ public class MainWindow {
 
         String benjiText = benji.getResponse(userText);
 
-        dialogContainer.getChildren().addAll(
+        addDialogBoxes(
                 DialogBox.getUserDialog(userText, userImage),
                 DialogBox.getBenjiDialog(benjiText, benjiImage));
 
