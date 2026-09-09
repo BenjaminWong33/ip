@@ -125,7 +125,7 @@ public class Benji {
      * Add a task, saves the updated list, and returns a confirmation message.
      *
      * @param task task to add
-     * @return response confirming that the task was added
+     * @return response confirming
      */
     private String addTaskAndSave(Task task) {
         tasks.add(task);

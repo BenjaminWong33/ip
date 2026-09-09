@@ -5,8 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Handles saving and loading tasks from a file.
@@ -91,22 +93,37 @@ public class Storage {
     public static ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
 
+        // A missing file is normal when BENJI runs for the first time.
         if (!Files.exists(FILE_PATH)) {
             return tasks;
         }
 
+        // Track invalid lines so BENJI shows one clear message after loading.
+        boolean hasInvalidLines = false;
+
         try {
             List<String> lines = Files.readAllLines(FILE_PATH);
+
             for (String line : lines) {
+                // A null task means this line does not follow BENJI's saved format.
                 Task task = createTaskFromStorageLine(line);
 
-                if (task != null) {
-                    tasks.add(task);
+                if (task == null) {
+                    hasInvalidLines = true;
+                    continue; // Skip only this invalid line and load the next one.
                 }
+
+                tasks.add(task);
+            }
+
+            // Do not show one error message for every corrupted line.
+            if (hasInvalidLines) {
+                System.out.println("Some saved tasks were invalid and were skipped.");
             }
         } catch (IOException e) {
-            System.out.println("Sorry, i couldn't load your tasks");
+            System.out.println("Sorry, I couldn't load your tasks.");
         }
+
         return tasks;
     }
 
@@ -117,23 +134,75 @@ public class Storage {
      * @return restored task, or null if the task type is unknown
      */
     private static Task createTaskFromStorageLine(String line) {
+        // Split the saved line into its type, status, description, and timing fields.
         String[] parts = line.split(FIELD_SPLIT_REGEX);
-        String type = parts[0].trim();
-        boolean isDone = parts[1].trim().equals(DONE_STATUS);
-        Task task = null;
 
-        if (type.equals(TODO_TYPE)) {
-            task = new Todo(parts[2].trim());
-        } else if (type.equals(DEADLINE_TYPE)) {
-            task = new Deadline(parts[2].trim(), LocalDate.parse(parts[3].trim()));
-        } else if (type.equals(EVENT_TYPE)) {
-            task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
+        // Every saved task needs at least a type and completion status.
+        if (parts.length < 2) {
+            return null;
         }
 
-        if (task != null && isDone) {
+        String type = parts[0].trim();
+        String status = parts[1].trim();
+
+        // Only "0" and "1" are valid completion statuses.
+        if (!isValidStatus(status)) {
+            return null;
+        }
+
+        boolean isDone = status.equals(DONE_STATUS);
+        Task task;
+
+        if (type.equals(TODO_TYPE)) {
+            // Todo format: T | STATUS | DESCRIPTION
+            if (parts.length != 3 || parts[2].trim().isEmpty()) {
+                return null;
+            }
+            task = new Todo(parts[2].trim());
+
+        } else if (type.equals(DEADLINE_TYPE)) {
+            // Deadline format: D | STATUS | DESCRIPTION | DATE
+            if (parts.length != 4 || parts[2].trim().isEmpty()) {
+                return null;
+            }
+
+            try {
+                task = new Deadline(parts[2].trim(),
+                        LocalDate.parse(parts[3].trim()));
+            } catch (DateTimeParseException e) {
+                // An invalid deadline date means this saved line is corrupted.
+                return null;
+            }
+
+        } else if (type.equals(EVENT_TYPE)) {
+            // Event format: E | STATUS | DESCRIPTION | START | END
+            if (parts.length != 5 || parts[2].trim().isEmpty()
+                    || parts[3].trim().isEmpty() || parts[4].trim().isEmpty()) {
+                return null;
+            }
+            task = new Event(parts[2].trim(), parts[3].trim(),
+                    parts[4].trim());
+
+        } else {
+            // BENJI does not recognise this task type.
+            return null;
+        }
+
+        // Restore the saved completion status after creating the task.
+        if (isDone) {
             task.markAsDone();
         }
 
         return task;
+    }
+
+    /**
+     * Checks whether a saved completion status is valid.
+     *
+     * @param status completion status read from the storage file
+     * @return true if the status is either done or not done
+     */
+    private static boolean isValidStatus(String status) {
+        return status.equals(DONE_STATUS) || status.equals(NOT_DONE_STATUS);
     }
 }
