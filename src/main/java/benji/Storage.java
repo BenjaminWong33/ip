@@ -19,6 +19,13 @@ public class Storage {
     // Path: A Java object that represents a file or folder location on your computer.
     // Paths.get(...): A tool that joins folder names and file names together correctly.
     private static final Path FILE_PATH = Paths.get("data", "benji.txt");
+    private static final String FIELD_SEPARATOR = " | ";
+    private static final String FIELD_SPLIT_REGEX = "\\|";
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+    private static final String DONE_STATUS = "1";
+    private static final String NOT_DONE_STATUS = "0";
 
     /**
      * Saves all tasks in the task list to the storage file.
@@ -35,25 +42,44 @@ public class Storage {
             //  it does nothing and does not crash
             Files.createDirectories(FILE_PATH.getParent());
 
-            ArrayList<String> lines = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
 
             for (Task task : tasks.getTasks()) {
-                if (task instanceof Todo) {
-                    lines.add("T | " + (task.isDone ? "1" : "0") + " | " + task.description);
-                } else if (task instanceof Deadline) {
-                    Deadline deadline = (Deadline) task;
-                    lines.add("D | " + (task.isDone ? "1" : "0") + " | " + task.description + " | " + deadline.by);
-                } else if (task instanceof Event) {
-                    Event event = (Event) task;
-                    lines.add("E | " + (task.isDone ? "1" : "0") + " | " + task.description + " | " + event.start
-                            + " | " + event.end);
-                }
+                lines.add(convertTaskToStorageLine(task));
             }
             Files.write(FILE_PATH, lines); // write and overwrite content in a specific file
 
         } catch (IOException e) {
             System.out.println("Sorry, I couldn't save your tasks");
         }
+    }
+
+    /**
+     * Converts one task into the line format used by the storage file.
+     *
+     * @param task task to convert
+     * @return formatted storage line
+     */
+    private static String convertTaskToStorageLine(Task task) {
+        String status = task.isDone ? DONE_STATUS : NOT_DONE_STATUS;
+
+        if (task instanceof Todo) {
+            return TODO_TYPE + FIELD_SEPARATOR + status
+                    + FIELD_SEPARATOR + task.description;
+        } else if (task instanceof Deadline) {
+            Deadline deadline = (Deadline) task;
+            return DEADLINE_TYPE + FIELD_SEPARATOR + status
+                    + FIELD_SEPARATOR + task.description
+                    + FIELD_SEPARATOR + deadline.by;
+        } else if (task instanceof Event) {
+            Event event = (Event) task;
+            return EVENT_TYPE + FIELD_SEPARATOR + status
+                    + FIELD_SEPARATOR + task.description
+                    + FIELD_SEPARATOR + event.start
+                    + FIELD_SEPARATOR + event.end;
+        }
+
+        throw new IllegalArgumentException("Unsupported task type");
     }
 
     /**
@@ -72,23 +98,9 @@ public class Storage {
         try {
             List<String> lines = Files.readAllLines(FILE_PATH);
             for (String line : lines) {
-                //  cuts a text line into smaller pieces wherever it finds a vertical bar (|) character
-                String[] parts = line.split("\\|");
-                String type = parts[0].trim();
-                boolean isDone = parts[1].trim().equals("1");
-                Task task = null;
-                if (type.equals("T")) {
-                    task = new Todo(parts[2].trim());
-                } else if (type.equals("D")) {
-                    task = new Deadline(parts[2].trim(), LocalDate.parse(parts[3].trim()));
-                } else if (type.equals("E")) {
-                    task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
-                }
+                Task task = createTaskFromStorageLine(line);
 
                 if (task != null) {
-                    if (isDone) {
-                        task.markAsDone();
-                    }
                     tasks.add(task);
                 }
             }
@@ -96,5 +108,32 @@ public class Storage {
             System.out.println("Sorry, i couldn't load your tasks");
         }
         return tasks;
+    }
+
+    /**
+     * Creates a task from one line in the storage file.
+     *
+     * @param line line read from the storage file
+     * @return restored task, or null if the task type is unknown
+     */
+    private static Task createTaskFromStorageLine(String line) {
+        String[] parts = line.split(FIELD_SPLIT_REGEX);
+        String type = parts[0].trim();
+        boolean isDone = parts[1].trim().equals(DONE_STATUS);
+        Task task = null;
+
+        if (type.equals(TODO_TYPE)) {
+            task = new Todo(parts[2].trim());
+        } else if (type.equals(DEADLINE_TYPE)) {
+            task = new Deadline(parts[2].trim(), LocalDate.parse(parts[3].trim()));
+        } else if (type.equals(EVENT_TYPE)) {
+            task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
+        }
+
+        if (task != null && isDone) {
+            task.markAsDone();
+        }
+
+        return task;
     }
 }
