@@ -32,6 +32,8 @@ public class TaskList {
      * @param task the task to add.
      */
     public void add(Task task) {
+
+        assert task != null : "A task list should never contain a null task";
         this.tasks.add(task);
     }
 
@@ -42,6 +44,8 @@ public class TaskList {
      * @return the task at the specified index.
      */
     public Task get(int index) {
+
+        assert index >= 0 && index < tasks.size() : "index should be a valid index";
         return tasks.get(index);
     }
 
