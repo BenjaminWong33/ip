@@ -24,7 +24,8 @@ public class Storage {
      * @param tasks the list of tasks to save
      */
     public static void saveTasks(TaskList tasks) {
-
+        assert tasks != null : "Saving should always receive a valid task list";
+        assert FILE_PATH.getParent() != null : "Storage file path must include a parent directory";
         try {
             // Create the data directory when BENJI saves for the first time.
             Files.createDirectories(FILE_PATH.getParent());
