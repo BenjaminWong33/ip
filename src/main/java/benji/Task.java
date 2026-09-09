@@ -16,6 +16,7 @@ public class Task {
      * @param description
      */
     public Task(String description) {
+        assert description != null && !description.isBlank() : "Every task should have a meaningful description";
         this.description = description;
         this.isDone = false;
 
