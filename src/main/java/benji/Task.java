@@ -13,7 +13,7 @@ public class Task {
     /**
      * Creates a new task with the given description.
      *
-     * @param description
+     * @param description text describing the task
      */
     public Task(String description) {
         assert description != null && !description.isBlank() : "Every task should have a meaningful description";
