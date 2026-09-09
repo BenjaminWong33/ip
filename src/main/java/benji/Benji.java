@@ -118,6 +118,16 @@ public class Benji {
         }
 
         Task task = new Todo(description);
+        return addTaskAndSave(task);
+    }
+
+    /**
+     * Add a task, saves the updated list, and returns a confirmation message.
+     *
+     * @param task task to add
+     * @return response confirming that the task was added
+     */
+    private String addTaskAndSave(Task task) {
         tasks.add(task);
         Storage.saveTasks(tasks);
         return "Got it. I've added this task:\n  " + task + "\nNow you have "
@@ -144,10 +154,7 @@ public class Benji {
 
         try {
             Task task = new Deadline(description, LocalDate.parse(by));
-            tasks.add(task);
-            Storage.saveTasks(tasks);
-            return "Got it. I've added this task:\n  " + task + "\nNow you have "
-                    + tasks.size() + " tasks in the list.";
+            return addTaskAndSave(task);
         } catch (DateTimeParseException e) {
             throw new BenjiException("Please enter the date in yyyy-MM-dd format.");
         }
@@ -179,10 +186,7 @@ public class Benji {
         }
 
         Task task = new Event(description, start, end);
-        tasks.add(task);
-        Storage.saveTasks(tasks);
-        return "Got it. I've added this task:\n  " + task + "\nNow you have "
-                + tasks.size() + " tasks in the list.";
+        return addTaskAndSave(task);
     }
 
     /** Deletes a task and saves the updated list. */
