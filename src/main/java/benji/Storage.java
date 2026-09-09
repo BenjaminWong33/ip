@@ -61,20 +61,20 @@ public class Storage {
      * @return formatted storage line
      */
     private static String convertTaskToStorageLine(Task task) {
-        String status = task.isDone ? DONE_STATUS : NOT_DONE_STATUS;
+        String status = task.isDone() ? DONE_STATUS : NOT_DONE_STATUS;
 
         if (task instanceof Todo) {
             return TODO_TYPE + FIELD_SEPARATOR + status
-                    + FIELD_SEPARATOR + task.description;
+                    + FIELD_SEPARATOR + task.getDescription();
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
             return DEADLINE_TYPE + FIELD_SEPARATOR + status
-                    + FIELD_SEPARATOR + task.description
+                    + FIELD_SEPARATOR + task.getDescription()
                     + FIELD_SEPARATOR + deadline.by;
         } else if (task instanceof Event) {
             Event event = (Event) task;
             return EVENT_TYPE + FIELD_SEPARATOR + status
-                    + FIELD_SEPARATOR + task.description
+                    + FIELD_SEPARATOR + task.getDescription()
                     + FIELD_SEPARATOR + event.start
                     + FIELD_SEPARATOR + event.end;
         }
