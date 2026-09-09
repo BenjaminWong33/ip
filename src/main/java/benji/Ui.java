@@ -9,8 +9,8 @@ import java.util.Scanner;
  * reading commands entered by the user.</p>
  */
 public class Ui {
-    private String line = "____________________________________________________________";
-    private String banner = ""
+    private static final String HORIZONTAL_LINE = "____________________________________________________________";
+    private static final String BANNER = ""
             + "  BBBBB   EEEEEEE  NN   NN  JJJJJJJ  IIIIIII\n"
             + "  BB  BB  EE       NNN  NN     JJJ     III  \n"
             + "  BBBBB   EEEEE    NN N NN     JJJ     III  \n"
@@ -31,11 +31,11 @@ public class Ui {
      * Displays the welcome message when BENJI starts
      */
     public void showWelcome() {
-        System.out.println(line);
-        System.out.println(banner);
+        System.out.println(HORIZONTAL_LINE);
+        System.out.println(BANNER);
         System.out.println("Hello! I'm BENJI.");
         System.out.println("What can I do for you?");
-        System.out.println(line);
+        System.out.println(HORIZONTAL_LINE);
     }
 
     /**
@@ -51,7 +51,7 @@ public class Ui {
      * Displays a horizontal line in the console.
      */
     public void showLine() {
-        System.out.println("____________________________________________________________");
+        System.out.println(HORIZONTAL_LINE);
     }
 
     /**
