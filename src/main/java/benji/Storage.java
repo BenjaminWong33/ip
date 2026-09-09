@@ -15,9 +15,7 @@ import java.util.List;
  * they can be restored when the application is started again.</p>
  */
 public class Storage {
-    // Look for benji.txt inside the data folder.
-    // Path: A Java object that represents a file or folder location on your computer.
-    // Paths.get(...): A tool that joins folder names and file names together correctly.
+    // Keep saved data in a relative, platform-independent project location.
     private static final Path FILE_PATH = Paths.get("data", "benji.txt");
 
     /**
@@ -28,11 +26,7 @@ public class Storage {
     public static void saveTasks(TaskList tasks) {
 
         try {
-            // FILE_PATH: The full path to your target file (like C:/data/reports/summary.txt).
-            // .getParent(): Grabs just the folder path where the file lives (like C:/data/reports).
-            // Files.createDirectories(...): Builds those folders on your computer.
-            // If any middle folder is missing, it creates all of them at once. If the folders are already there,
-            //  it does nothing and does not crash
+            // Create the data directory when BENJI saves for the first time.
             Files.createDirectories(FILE_PATH.getParent());
 
             ArrayList<String> lines = new ArrayList<>();
@@ -72,7 +66,7 @@ public class Storage {
         try {
             List<String> lines = Files.readAllLines(FILE_PATH);
             for (String line : lines) {
-                //  cuts a text line into smaller pieces wherever it finds a vertical bar (|) character
+                // Split the saved record into its task fields.
                 String[] parts = line.split("\\|");
                 String type = parts[0].trim();
                 boolean isDone = parts[1].trim().equals("1");

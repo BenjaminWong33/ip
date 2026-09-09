@@ -7,21 +7,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/** Configures and displays BENJI's JavaFX application window. */
 public class Main extends Application {
     private final Benji benji = new Benji();
 
+    /** Loads the main window and connects it to BENJI's command processor. */
     @Override
     public void start(Stage stage) {
         try {
-            // find the UI FXML file and load it
             FXMLLoader fxmlLoader = new FXMLLoader(
                 Main.class.getResource("/view/MainWindow.fxml"));
 
-            // load the UI and create a scene
             Scene scene = new Scene(fxmlLoader.load());
 
-            // get the java class controller of the FXML file
-            //The <MainWindow> tells Java that the controller is a MainWindow object
             fxmlLoader.<MainWindow>getController().setBenji(benji);
 
             stage.setTitle("BENJI");
@@ -32,5 +30,3 @@ public class Main extends Application {
         }
     }
 }
-
-

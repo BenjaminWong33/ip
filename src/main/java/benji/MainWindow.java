@@ -39,10 +39,16 @@ public class MainWindow {
                 observable -> scrollPane.setVvalue(1.0));
     }
 
+    /**
+     * Connects this window to the shared BENJI command processor.
+     *
+     * @param benji command processor used to respond to user input
+     */
     public void setBenji(Benji benji) {
         this.benji = benji;
     }
 
+    /** Adds one or more chat messages to the conversation area. */
     private void addDialogBoxes(DialogBox...dialogBoxes) {
         dialogContainer.getChildren().addAll(dialogBoxes);
     }

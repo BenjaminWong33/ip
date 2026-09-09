@@ -1,7 +1,7 @@
 package benji;
 
 /**
- * Represents Event, a subclass of the Task class
+ * Represents a task that takes place during a specified time period.
  */
 public class Event extends Task {
     protected String start;

@@ -5,6 +5,7 @@ package benji;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 /**
  * Processes user commands and manages the user's task list.
@@ -214,14 +215,17 @@ public class Benji {
             throw new BenjiException("Please enter a keyword after find.");
         }
 
+        // Use a stream to keep only tasks whose display text contains the keyword.
+        List<Task> matchingTasks = tasks.getTasks().stream()
+                .filter(task -> task.toString().contains(keyword))
+                .toList();
         StringBuilder reply = new StringBuilder("Here are the matching tasks in your list:");
-        int counter = 0;
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).toString().contains(keyword)) {
-                counter++;
-                reply.append("\n").append(counter).append(".").append(tasks.get(i));
-            }
+
+        // A normal loop keeps the result numbering clear and simple.
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            reply.append("\n").append(i + 1).append(".").append(matchingTasks.get(i));
         }
+
         return reply.toString();
     }
 }

@@ -24,7 +24,7 @@ public class Ui {
      * Creates a new user interface and prepares it to read input from the console.
      */
     public Ui() {
-        scanner = new Scanner(System.in); // create a tool or scanner that reads input typed by a user
+        scanner = new Scanner(System.in);
     }
 
     /**
