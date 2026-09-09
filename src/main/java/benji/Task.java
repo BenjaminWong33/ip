@@ -7,8 +7,8 @@ package benji;
  * completed or incomplete.</p>
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     /**
      * Creates a new task with the given description.
@@ -19,7 +19,24 @@ public class Task {
         assert description != null && !description.isBlank() : "Every task should have a meaningful description";
         this.description = description;
         this.isDone = false;
+    }
 
+    /**
+     * Returns the task description.
+     *
+     * @return task description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Returns whether this task is completed.
+     *
+     * @return true if this task is completed
+     */
+    public boolean isDone() {
+        return isDone;
     }
 
     /**
@@ -28,21 +45,21 @@ public class Task {
      * @return "X" if the task is completed, or a blank space otherwise.
      */
     public String getStatusIcon() {
-        return this.isDone ? "X" : " ";
+        return isDone ? "X" : " ";
     }
 
     /**
      * Marks this task as completed.
      */
     public void markAsDone() {
-        this.isDone = true;
+        isDone = true;
     }
 
     /**
      * Marks this task as incomplete.
      */
     public void markAsNotDone() {
-        this.isDone = false;
+        isDone = false;
     }
 
     /**
@@ -51,7 +68,7 @@ public class Task {
      * @return the task's status icon followed by its description.
      */
     public String toString() {
-        return "[" + getStatusIcon() + "] " + this.description;
+        return "[" + getStatusIcon() + "] " + description;
     }
 
 

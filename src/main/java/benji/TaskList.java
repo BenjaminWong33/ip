@@ -1,6 +1,7 @@
 package benji;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a collection of tasks managed by BENJI.
@@ -8,19 +9,19 @@ import java.util.ArrayList;
  * <p>Provides operations for adding, retrieving, deleting, and counting tasks.</p>
  */
 public class TaskList {
-    private ArrayList<Task> tasks;
+    private final List<Task> tasks;
 
     /**
      * Creates an empty task list.
      */
     public TaskList() {
-        tasks = new ArrayList();
+        tasks = new ArrayList<>();
     }
 
     /**
      * Creates a task list containing the given tasks.
      *
-     * @param tasks
+     * @param tasks to assign
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
@@ -73,7 +74,7 @@ public class TaskList {
      *
      * @return the list containing all tasks
      */
-    public ArrayList<Task> getTasks() {
-        return tasks;
+    public List<Task> getTasks() {
+        return List.copyOf(tasks);
     }
 }
