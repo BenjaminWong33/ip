@@ -35,7 +35,8 @@ public class Storage {
      * @param tasks the list of tasks to save
      */
     public static void saveTasks(TaskList tasks) {
-
+        assert tasks != null : "Saving should always receive a valid task list";
+        assert FILE_PATH.getParent() != null : "Storage file path must include a parent directory";
         try {
             // FILE_PATH: The full path to your target file (like C:/data/reports/summary.txt).
             // .getParent(): Grabs just the folder path where the file lives (like C:/data/reports).
