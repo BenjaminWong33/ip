@@ -14,9 +14,9 @@ public class Event extends Task {
      * @param end description of the end date of the task
      */
     public Event(String description, String start, String end) {
+        super(description);
         assert start != null && !start.isBlank() : "Event should have a start time";
         assert end != null && !end.isBlank() : "Event should have an end time";
-        super(description);
         this.start = start;
         this.end = end;
     }

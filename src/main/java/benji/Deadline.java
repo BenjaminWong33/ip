@@ -16,8 +16,8 @@ public class Deadline extends Task {
      * @param by description of the date bby which the task should be completed.
      */
     public Deadline(String description, LocalDate by) {
-        assert by != null : "A deadline cannot exist without a date";
         super(description);
+        assert by != null : "A deadline cannot exist without a date";
         this.by = by;
     }
 
