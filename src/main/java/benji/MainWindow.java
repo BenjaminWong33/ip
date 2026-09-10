@@ -1,6 +1,8 @@
 package benji;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -71,5 +73,37 @@ public class MainWindow {
                 DialogBox.getBenjiDialog(benjiText, benjiImage));
 
         userInput.clear();
+    }
+
+    /**
+     * Shows a guide explaining the commands that BENJI understands.
+     */
+    @FXML
+    private void showHelp() {
+        Alert helpDialog = new Alert(Alert.AlertType.INFORMATION);
+        helpDialog.setTitle("BENJI Command Guide");
+        helpDialog.setHeaderText("How to use BENJI");
+
+        helpDialog.setContentText(
+                "list\n"
+                        + "  Show every task.\n\n"
+                        + "todo DESCRIPTION\n"
+                        + "  Add a to-do task.\n\n"
+                        + "deadline DESCRIPTION /by yyyy-MM-dd\n"
+                        + "  Add a task with a deadline.\n\n"
+                        + "event DESCRIPTION /from START /to END\n"
+                        + "  Add an event.\n\n"
+                        + "mark TASK_NUMBER\n"
+                        + "unmark TASK_NUMBER\n"
+                        + "  Change a task's completion status.\n\n"
+                        + "delete TASK_NUMBER\n"
+                        + "  Remove a task.\n\n"
+                        + "find KEYWORD\n"
+                        + "  Search for tasks.\n\n"
+                        + "bye\n"
+                        + "  Exit BENJI.");
+
+        helpDialog.getButtonTypes().setAll(ButtonType.CLOSE);
+        helpDialog.showAndWait();
     }
 }
