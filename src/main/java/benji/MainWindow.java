@@ -1,23 +1,41 @@
 package benji;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 /**
  * Controls BENJI's main application window.
  */
 public class MainWindow {
     @FXML
+    private AnchorPane mainPane;
+    @FXML
+    private StackPane headerPane;
+    @FXML
+    private AnchorPane footerPane;
+    @FXML
     private ScrollPane scrollPane;
     @FXML
     private VBox dialogContainer;
     @FXML
     private TextField userInput;
+    @FXML
+    private Button helpButton;
+    @FXML
+    private Button sendButton;
 
     private Benji benji;
 
@@ -32,6 +50,7 @@ public class MainWindow {
      */
     @FXML
     public void initialize() {
+        configureResponsiveControls();
         addDialogBoxes(DialogBox.getBenjiDialog(
                 "Hello! I am BENJI. What can I do for you?",
                 benjiImage));
@@ -39,6 +58,68 @@ public class MainWindow {
 
         dialogContainer.heightProperty().addListener(
                 observable -> scrollPane.setVvalue(1.0));
+    }
+
+    /** Configures controls to scale within readable size limits as the window resizes. */
+    private void configureResponsiveControls() {
+        NumberBinding headerHeight = Bindings.max(60.0,
+                Bindings.min(90.0, mainPane.widthProperty().multiply(0.10)));
+
+        NumberBinding footerHeight = Bindings.max(60.0,
+                Bindings.min(120.0, mainPane.widthProperty().multiply(0.15)));
+
+        NumberBinding fontSize = Bindings.max(12.0,
+                Bindings.min(24.0, mainPane.widthProperty().divide(33.0)));
+
+        NumberBinding sendButtonWidth = Bindings.max(60.0,
+                Bindings.min(120.0, mainPane.widthProperty().multiply(0.15)));
+        NumberBinding controlPadding = Bindings.max(12.0,
+                Bindings.min(24.0, mainPane.widthProperty().multiply(0.03)));
+
+        headerPane.prefHeightProperty().bind(headerHeight);
+        footerPane.prefHeightProperty().bind(footerHeight);
+        ObjectBinding<Font> responsiveFont =
+                Bindings.createObjectBinding(() -> Font.font(fontSize.doubleValue()), fontSize);
+        ObjectBinding<Insets> buttonPadding =
+                Bindings.createObjectBinding(() -> new Insets(
+                        controlPadding.doubleValue() / 2,
+                        controlPadding.doubleValue(),
+                        controlPadding.doubleValue() / 2,
+                        controlPadding.doubleValue()), controlPadding);
+        helpButton.fontProperty().bind(responsiveFont);
+        helpButton.paddingProperty().bind(buttonPadding);
+        userInput.fontProperty().bind(responsiveFont);
+        sendButton.fontProperty().bind(responsiveFont);
+        sendButton.paddingProperty().bind(buttonPadding);
+        sendButton.prefWidthProperty().bind(sendButtonWidth);
+
+        updateScrollPaneAnchors(headerHeight.doubleValue(), footerHeight.doubleValue());
+        updateFooterControlAnchors(sendButtonWidth.doubleValue(), controlPadding.doubleValue());
+        headerHeight.addListener((observable, oldValue, newValue) ->
+                updateScrollPaneAnchors(headerHeight.doubleValue(), footerHeight.doubleValue()));
+        footerHeight.addListener((observable, oldValue, newValue) ->
+                updateScrollPaneAnchors(headerHeight.doubleValue(), footerHeight.doubleValue()));
+        sendButtonWidth.addListener((observable, oldValue, newValue) ->
+                updateFooterControlAnchors(newValue.doubleValue(), controlPadding.doubleValue()));
+        controlPadding.addListener((observable, oldValue, newValue) ->
+                updateFooterControlAnchors(sendButtonWidth.doubleValue(), newValue.doubleValue()));
+    }
+
+    /** Keeps the conversation area between the responsive header and footer. */
+    private void updateScrollPaneAnchors(double headerHeight, double footerHeight) {
+        AnchorPane.setTopAnchor(scrollPane, headerHeight);
+        AnchorPane.setBottomAnchor(scrollPane, footerHeight);
+    }
+
+    /** Keeps the input controls equal in height and separated as the footer scales. */
+    private void updateFooterControlAnchors(double sendButtonWidth, double controlPadding) {
+        AnchorPane.setTopAnchor(userInput, controlPadding);
+        AnchorPane.setLeftAnchor(userInput, controlPadding);
+        AnchorPane.setRightAnchor(userInput, sendButtonWidth + controlPadding * 2);
+        AnchorPane.setBottomAnchor(userInput, controlPadding);
+        AnchorPane.setTopAnchor(sendButton, controlPadding);
+        AnchorPane.setRightAnchor(sendButton, controlPadding);
+        AnchorPane.setBottomAnchor(sendButton, controlPadding);
     }
 
     /**
