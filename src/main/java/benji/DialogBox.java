@@ -19,15 +19,17 @@ import javafx.scene.text.TextAlignment;
  */
 public class DialogBox extends HBox {
     private static final String USER_BUBBLE_STYLE =
-            "-fx-background-color: #111827;"
-                    + "-fx-text-fill: #00BFFF;"
-                    + "-fx-background-radius: 16 16 3 16;";
-
-    private static final String BENJI_BUBBLE_STYLE =
             "-fx-background-color: white;"
                     + "-fx-text-fill: #1F2937;"
+                    + "-fx-background-radius: 16 16 3 16;"
+                    + "-fx-border-color: #94A3B8;"
+                    + "-fx-border-width: 0.5;"
+                    + "-fx-border-radius: 16 16 3 16;";
+
+    private static final String BENJI_BUBBLE_STYLE =
+            "-fx-background-color: #111827;"
+                    + "-fx-text-fill: #00BFFF;"
                     + "-fx-background-radius: 16 16 16 3;"
-                    + "-fx-border-color: #D0D0D0;"
                     + "-fx-border-radius: 16 16 16 3;";
 
 

@@ -5,7 +5,6 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
