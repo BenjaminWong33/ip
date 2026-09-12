@@ -4,4 +4,4 @@ T | 0 | lunch
 T | 0 | go to school
 T | 0 | meeting
 T | 0 | lunch
-T | 0 | dinner
+T | 1 | dinner

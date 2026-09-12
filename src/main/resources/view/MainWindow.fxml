@@ -21,10 +21,12 @@
             <Button fx:id="helpButton"
                     text="How to use Benji?"
                     onAction="#showHelp"
-                    style="-fx-background-color: #0F766E;
-               -fx-text-fill: white;
-               -fx-font-weight: bold;
-               -fx-background-radius: 8;"/>
+                    style="-fx-background-color: #111827;
+                           -fx-text-fill: #00BFFF;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 8;
+                           -fx-border-color: #00BFFF;
+                           -fx-border-radius: 8;"/>
         </StackPane>
         <ScrollPane fx:id="scrollPane"
                     fitToWidth="true"
@@ -58,10 +60,12 @@
                         text="Send"
                         onAction="#handleUserInput"
                         prefWidth="90.0"
-                        style="-fx-background-color: #2563EB;
-               -fx-text-fill: white;
-               -fx-font-weight: bold;
-               -fx-background-radius: 8;"
+                        style="-fx-background-color: #111827;
+                               -fx-text-fill: #00BFFF;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 8;
+                               -fx-border-color: #00BFFF;
+                               -fx-border-radius: 8;"
                         AnchorPane.topAnchor="12.0"
                         AnchorPane.rightAnchor="12.0"
                         AnchorPane.bottomAnchor="12.0"/>

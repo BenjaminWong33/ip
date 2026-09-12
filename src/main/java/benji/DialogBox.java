@@ -19,8 +19,8 @@ import javafx.scene.text.TextAlignment;
  */
 public class DialogBox extends HBox {
     private static final String USER_BUBBLE_STYLE =
-            "-fx-background-color: #2563EB;"
-                    + "-fx-text-fill: white;"
+            "-fx-background-color: #111827;"
+                    + "-fx-text-fill: #00BFFF;"
                     + "-fx-background-radius: 16 16 3 16;";
 
     private static final String BENJI_BUBBLE_STYLE =

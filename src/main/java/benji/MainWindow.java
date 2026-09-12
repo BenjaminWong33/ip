@@ -7,11 +7,16 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -163,36 +168,79 @@ public class MainWindow {
     }
 
     /**
-     * Shows a guide explaining the commands that BENJI understands.
+     * Shows BENJI's command guide in a styled popup.
      */
     @FXML
     private void showHelp() {
-        Alert helpDialog = new Alert(Alert.AlertType.INFORMATION);
+        Dialog<Void> helpDialog = new Dialog<>();
         helpDialog.setTitle("BENJI Command Guide");
-        helpDialog.setHeaderText("How to use BENJI");
+        helpDialog.setResizable(false);
 
-        helpDialog.setContentText(
-                "list\n"
-                        + "  Show every task.\n\n"
-                        + "todo DESCRIPTION\n"
-                        + "  Add a to-do task.\n\n"
-                        + "deadline DESCRIPTION /by yyyy-MM-dd\n"
-                        + "  Add a task with a deadline.\n\n"
-                        + "event DESCRIPTION /from START /to END\n"
-                        + "  Add an event.\n\n"
-                        + "mark TASK_NUMBER\n"
-                        + "unmark TASK_NUMBER\n"
-                        + "  Change a task's completion status.\n\n"
-                        + "delete TASK_NUMBER\n"
-                        + "  Remove a task.\n\n"
-                        + "find KEYWORD\n"
-                        + "  Search for tasks.\n\n"
-                        + "help\n"
-                        + "  Show user guide\n\n"
-                        + "bye\n"
-                        + "  Exit BENJI.");
+        ButtonType closeButtonType = new ButtonType("Got it", ButtonBar.ButtonData.CANCEL_CLOSE);
+        helpDialog.getDialogPane().getButtonTypes().add(closeButtonType);
+        helpDialog.getDialogPane().setPrefSize(520, 560);
+        helpDialog.getDialogPane().setMinSize(520, 560);
+        helpDialog.getDialogPane().setMaxSize(520, 560);
+        helpDialog.getDialogPane().setStyle("-fx-background-color: #111827;");
 
-        helpDialog.getButtonTypes().setAll(ButtonType.CLOSE);
+        Label title = new Label("How to use BENJI");
+        title.setStyle("-fx-text-fill: white; -fx-font-size: 24; -fx-font-weight: bold;");
+
+        Label subtitle = new Label("Type one of these commands into the message box.");
+        subtitle.setStyle("-fx-text-fill: #CBD5E1; -fx-font-size: 14;");
+
+        VBox guideContent = new VBox(14);
+        guideContent.setPadding(new Insets(22));
+        guideContent.getChildren().addAll(
+                title,
+                subtitle,
+                createHelpRow("list", "Show every task."),
+                createHelpRow("todo DESCRIPTION", "Add a to-do task."),
+                createHelpRow("deadline DESCRIPTION /by yyyy-MM-dd", "Add a deadline task."),
+                createHelpRow("event DESCRIPTION /from START /to END", "Add an event."),
+                createHelpRow("mark TASK_NUMBER", "Mark a task as completed."),
+                createHelpRow("unmark TASK_NUMBER", "Mark a task as not completed."),
+                createHelpRow("delete TASK_NUMBER", "Remove a task."),
+                createHelpRow("find KEYWORD", "Search for tasks."),
+                createHelpRow("help", "Show this command guide."),
+                createHelpRow("bye", "Exit BENJI."));
+
+        ScrollPane guideScrollPane = new ScrollPane(guideContent);
+        guideScrollPane.setFitToWidth(true);
+        guideScrollPane.setPrefViewportHeight(420);
+        guideScrollPane.setStyle("-fx-background: #111827; -fx-background-color: #111827;");
+
+        helpDialog.getDialogPane().setContent(guideScrollPane);
+
+        Button closeButton = (Button) helpDialog.getDialogPane().lookupButton(closeButtonType);
+        closeButton.setStyle("-fx-background-color: #00BFFF;"
+                + "-fx-text-fill: black;"
+                + "-fx-font-weight: bold;"
+                + "-fx-background-radius: 8;");
+
         helpDialog.showAndWait();
+    }
+
+    /**
+     * Creates one command-and-description row for the Help guide.
+     *
+     * @param command command that the user can enter
+     * @param description explanation of the command
+     * @return a formatted guide row
+     */
+    private HBox createHelpRow(String command, String description) {
+        Label commandLabel = new Label(command);
+        commandLabel.setMinWidth(250);
+        commandLabel.setStyle("-fx-text-fill: #00BFFF;"
+                + "-fx-font-family: monospace;"
+                + "-fx-font-weight: bold;");
+
+        Label descriptionLabel = new Label(description);
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setStyle("-fx-text-fill: white;");
+
+        HBox row = new HBox(14, commandLabel, descriptionLabel);
+        HBox.setHgrow(descriptionLabel, Priority.ALWAYS);
+        return row;
     }
 }
