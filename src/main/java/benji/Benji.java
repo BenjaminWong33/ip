@@ -70,6 +70,8 @@ public class Benji {
                     return deleteTask(userInput);
                 case FIND:
                     return findTasks(userInput);
+                case HELP:
+                    return "Use the Help button in the JavaFx app to view the command guide.";
                 default:
                     throw new BenjiException("I beg your pardon, I am afraid I do not recognise this command.");
             }
