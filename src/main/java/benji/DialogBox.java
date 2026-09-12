@@ -15,15 +15,17 @@ import javafx.scene.layout.HBox;
  */
 public class DialogBox extends HBox {
     private static final String USER_BUBBLE_STYLE =
-            "-fx-background-color: #D9ECFF;"
-                    + "-fx-background-radius: 10;"
-                    + "-fx-border-radius: 10;";
+            "-fx-background-color: #2563EB;"
+                    + "-fx-text-fill: white;"
+                    + "-fx-background-radius: 16 16 3 16;";
 
     private static final String BENJI_BUBBLE_STYLE =
             "-fx-background-color: white;"
-                    + "-fx-background-radius: 10;"
+                    + "-fx-text-fill: #1F2937;"
+                    + "-fx-background-radius: 16 16 16 3;"
                     + "-fx-border-color: #D0D0D0;"
-                    + "-fx-border-radius: 10;";
+                    + "-fx-border-radius: 16 16 16 3;";
+
 
     private final Label message;
 
@@ -36,7 +38,7 @@ public class DialogBox extends HBox {
     private DialogBox(String text, Image image) {
         message = new Label(text);
         message.setWrapText(true);
-        message.setMaxWidth(270);
+        message.maxWidthProperty().bind(widthProperty().subtract(100));
         message.setPadding(new Insets(10, 14, 10, 14));
         message.setStyle(USER_BUBBLE_STYLE);
 
@@ -47,6 +49,7 @@ public class DialogBox extends HBox {
 
         setAlignment(Pos.TOP_RIGHT);
         setSpacing(10);
+        setPadding(new Insets(4,4,4,4));
         getChildren().addAll(message, avatar);
     }
 
