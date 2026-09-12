@@ -2,3 +2,4 @@ T | 1 | sleep
 T | 1 | homework
 T | 0 | lunch
 T | 0 | go to school
+T | 0 | meeting

@@ -30,6 +30,8 @@ public class Parser {
             return Command.DELETE;
         } else if (upperInput.startsWith("FIND ")) {
             return Command.FIND;
+        } else if (upperInput.equals("HELP")) {
+            return Command.HELP;
         } else {
             return Command.UNKNOWN;
         }

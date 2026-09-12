@@ -66,6 +66,12 @@ public class MainWindow {
             return;
         }
 
+        if (Parser.getCommand(userText) == Command.HELP) {
+            addDialogBoxes(DialogBox.getUserDialog(userText, userImage));
+            userInput.clear();
+            showHelp();
+            return;
+        }
         String benjiText = benji.getResponse(userText);
 
         addDialogBoxes(
@@ -100,6 +106,8 @@ public class MainWindow {
                         + "  Remove a task.\n\n"
                         + "find KEYWORD\n"
                         + "  Search for tasks.\n\n"
+                        + "help\n"
+                        + "  Show user guide\n\n"
                         + "bye\n"
                         + "  Exit BENJI.");
 
