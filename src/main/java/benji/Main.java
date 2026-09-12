@@ -22,6 +22,9 @@ public class Main extends Application {
 
             fxmlLoader.<MainWindow>getController().setBenji(benji);
 
+            stage.setMinWidth(420);
+            stage.setMinHeight(500);
+            stage.setResizable(true);
             stage.setTitle("BENJI");
             stage.setScene(scene);
             stage.show();
