@@ -18,6 +18,7 @@ import javafx.scene.text.TextAlignment;
  * Represents one chat message with text and an avatar.
  */
 public class DialogBox extends HBox {
+    // Chatgpt 5.6 Terra Medium was used to suggest the color palette
     private static final String USER_BUBBLE_STYLE =
             "-fx-background-color: white;"
                     + "-fx-text-fill: #1F2937;"
@@ -45,6 +46,8 @@ public class DialogBox extends HBox {
         NumberBinding avatarSize = Bindings.max(70.0,
                 Bindings.min(140.0, widthProperty().multiply(0.175)));
 
+        // Most of the codes were reused from se-education.org javafx tutorial
+        // Chatgpt 5.6 Terra Medium was used to suggest some methods
         message = new Label(text);
         message.setWrapText(true);
 
