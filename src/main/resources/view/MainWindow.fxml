@@ -21,8 +21,9 @@
             <Button fx:id="helpButton"
                     text="How to use BENJI?"
                     onAction="#showHelp"
-                    style="-fx-background-color: #475569;
-                           -fx-text-fill: white;
+                    style="-fx-background-color: white;
+                           -fx-border-color: #D1D5DB;
+                           -fx-border-radius: 8;
                            -fx-font-weight: bold;
                            -fx-background-radius: 8;"/>
         </StackPane>

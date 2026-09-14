@@ -66,8 +66,8 @@ public class MainWindow {
 
     /** Configures controls to scale within readable size limits as the window resizes. */
     private void configureResponsiveControls() {
-        NumberBinding headerHeight = Bindings.max(60.0,
-                Bindings.min(90.0, mainPane.widthProperty().multiply(0.10)));
+        NumberBinding headerHeight = Bindings.max(50.0,
+                Bindings.min(60.0, mainPane.widthProperty().multiply(0.10)));
 
         NumberBinding footerHeight = Bindings.max(60.0,
                 Bindings.min(120.0, mainPane.widthProperty().multiply(0.15)));
