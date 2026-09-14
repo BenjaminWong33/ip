@@ -14,4 +14,19 @@ public class TaskListTest {
         assertEquals(1, tasks.size());
         assertEquals(task, tasks.get(0));
     }
+
+    @Test
+    public void deleteTask_removesCorrectTaskAndKeepsOrder() {
+        TaskList tasks = new TaskList();
+        tasks.add(new Todo("first task"));
+        tasks.add(new Todo("second task"));
+        tasks.add(new Todo("third task"));
+
+        Task deletedTask = tasks.delete(1);
+
+        assertEquals("[T][ ] second task", deletedTask.toString());
+        assertEquals(2, tasks.size());
+        assertEquals("first task", tasks.get(0).getDescription());
+        assertEquals("third task", tasks.get(1).getDescription());
+    }
 }
