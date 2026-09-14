@@ -168,8 +168,8 @@ public class Benji {
         String taskDescription = userInput.substring("event".length()).trim();
         int startIndex = taskDescription.indexOf("/from");
         int endIndex = taskDescription.indexOf("/to");
-        if (startIndex == -1 || endIndex == -1) {
-            throw new BenjiException("Please ensure both '/from' and '/to' are included"
+        if (startIndex == -1 || endIndex == -1 || startIndex > endIndex) {
+            throw new BenjiException("Please ensure both '/from START' appears before '/to END'"
                     + " in your event description.");
         }
 
