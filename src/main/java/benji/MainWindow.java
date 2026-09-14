@@ -24,6 +24,8 @@ import javafx.scene.text.Font;
  * Controls BENJI's main application window.
  */
 public class MainWindow {
+    // Most of the codes were reused from se-education.org javafx tutorial
+    // Chatgpt 5.6 Terra Medium was used extensively to suggest some methods
     @FXML
     private AnchorPane mainPane;
     @FXML
@@ -79,6 +81,7 @@ public class MainWindow {
                 Bindings.min(120.0, mainPane.widthProperty().multiply(0.15)));
         NumberBinding controlPadding = Bindings.max(12.0,
                 Bindings.min(24.0, mainPane.widthProperty().multiply(0.03)));
+
 
         headerPane.prefHeightProperty().bind(headerHeight);
         footerPane.prefHeightProperty().bind(footerHeight);
