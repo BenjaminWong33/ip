@@ -27,6 +27,6 @@ public class TaskListTest {
         assertEquals("[T][ ] second task", deletedTask.toString());
         assertEquals(2, tasks.size());
         assertEquals("first task", tasks.get(0).getDescription());
-        assertEquals("second task", tasks.get(1).getDescription());
+        assertEquals("third task", tasks.get(1).getDescription());
     }
 }
