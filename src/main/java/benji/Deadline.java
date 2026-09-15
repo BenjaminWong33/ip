@@ -23,6 +23,11 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    /**
+     * Returns this deadline with its due date in BENJI's display format.
+     *
+     * @return the deadline prefixed with "[D]" and followed by its due date
+     */
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by.format(FORMATTER) + ")";
