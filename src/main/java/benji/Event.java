@@ -21,6 +21,11 @@ public class Event extends Task {
         this.end = end;
     }
 
+    /**
+     * Returns this event with its start and end times in BENJI's display format.
+     *
+     * @return the event prefixed with "[E]" and followed by its time range
+     */
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + this.start + " to: " + this.end + ")";
