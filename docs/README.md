@@ -153,3 +153,8 @@ BENJI keeps your task list unchanged when it cannot understand a command.
 - `[T]` — to-do
 - `[D]` — deadline
 - `[E]` — event
+
+## Acknowledgements
+
+See the [project README](../README.md#acknowledgements) for AI-assistance and
+asset-attribution details.
