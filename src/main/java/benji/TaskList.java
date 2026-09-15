@@ -42,7 +42,7 @@ public class TaskList {
      * Returns the task at the specified index.
      *
      * @param index the index of the task.
-     * @return the task at the specified indexi.
+     * @return the task at the specified index.
      */
     public Task get(int index) {
 
@@ -61,7 +61,7 @@ public class TaskList {
     }
 
     /**
-     * Returns the number of tasks in the lsit.
+     * Returns the number of tasks in the list.
      *
      * @return the number of tasks.
      */
