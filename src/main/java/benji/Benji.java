@@ -152,6 +152,10 @@ public class Benji {
     /** Adds a deadline task and saves the updated list. */
     private String addDeadline(String userInput) throws BenjiException {
         String taskDescription = userInput.substring("deadline".length()).trim();
+        if (taskDescription.isEmpty()) {
+            throw new BenjiException("Please enter a description after deadline.");
+        }
+
         int byIndex = taskDescription.indexOf("/by");
         if (byIndex == -1) {
             throw new BenjiException("Please ensure '/by TIME' is included in your deadline description.");
@@ -178,6 +182,10 @@ public class Benji {
     /** Adds an event task and saves the updated list. */
     private String addEvent(String userInput) throws BenjiException {
         String taskDescription = userInput.substring("event".length()).trim();
+        if (taskDescription.isEmpty()) {
+            throw new BenjiException("Please enter a description after event.");
+        }
+
         int startIndex = taskDescription.indexOf("/from");
         int endIndex = taskDescription.indexOf("/to");
         if (startIndex == -1 || endIndex == -1 || startIndex > endIndex) {
