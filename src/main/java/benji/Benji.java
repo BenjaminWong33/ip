@@ -125,6 +125,18 @@ public class Benji {
     }
 
     /**
+     * Returns the task-count message with correct singular or plural wording.
+     *
+     * @return message stating the current number of tasks
+     */
+    private String getTaskCountMessage() {
+        int taskCount = tasks.size();
+        String taskWord = taskCount == 1 ? "task" : "tasks";
+
+        return "Now you have " + taskCount + " " + taskWord + " in the list.";
+    }
+
+    /**
      * Add a task, saves the updated list, and returns a confirmation message.
      *
      * @param task task to add
@@ -133,8 +145,8 @@ public class Benji {
     private String addTaskAndSave(Task task) {
         tasks.add(task);
         Storage.saveTasks(tasks);
-        return "Got it. I've added this task:\n  " + task + "\nNow you have "
-                + tasks.size() + " tasks in the list.";
+        return "Got it. I've added this task:\n  " + task + "\n"
+                + getTaskCountMessage();
     }
 
     /** Adds a deadline task and saves the updated list. */
@@ -207,8 +219,8 @@ public class Benji {
 
             Task deletedTask = tasks.delete(taskNumber - 1);
             Storage.saveTasks(tasks);
-            return "Noted. I've removed this task:\n  " + deletedTask + "\nNow you have "
-                    + tasks.size() + " tasks in the list.";
+            return "Noted. I've removed this task:\n  " + deletedTask + "\n"
+                    + getTaskCountMessage();
         } catch (NumberFormatException e) {
             throw new BenjiException("Please enter a whole task number after delete.");
         }
