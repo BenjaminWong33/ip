@@ -174,12 +174,8 @@ public class Benji {
             throw new BenjiException("Please enter the timing after /by");
         }
 
-        try {
-            Task task = new Deadline(description, LocalDate.parse(by));
-            return addTaskAndSave(task);
-        } catch (DateTimeParseException e) {
-            throw new BenjiException("Please enter a valid date in YYYY-MM-DD format.");
-        }
+        Task task = new Deadline(description, by);
+        return addTaskAndSave(task);
     }
 
     /** Adds an event task and saves the updated list. */

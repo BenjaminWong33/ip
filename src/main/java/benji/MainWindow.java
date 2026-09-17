@@ -26,6 +26,8 @@ import javafx.scene.text.Font;
 public class MainWindow {
     // Most of the codes were reused from se-education.org javafx tutorial
     // Chatgpt 5.6 Terra Medium was used extensively to suggest some methods
+    private final String SPACING = "                  ";
+
     @FXML
     private AnchorPane mainPane;
     @FXML
@@ -191,15 +193,22 @@ public class MainWindow {
         Label subtitle = new Label("Type one of these commands into the message box.");
         subtitle.setStyle("-fx-text-fill: #CBD5E1; -fx-font-size: 14;");
 
+        Label note = new Label("Note: DATE_OR_TIME could be either in " +
+                "YYYY-MM-DD format or\n a general description");
+        note.setStyle("-fx-text-fill: #CBD5E1; -fx-font-size: 14;");
+
         VBox guideContent = new VBox(14);
         guideContent.setPadding(new Insets(22));
         guideContent.getChildren().addAll(
                 title,
                 subtitle,
+                note,
                 createHelpRow("list", "Show every task."),
                 createHelpRow("todo DESCRIPTION", "Add a to-do task."),
-                createHelpRow("deadline DESCRIPTION /by YYYY-MM-DD", "Add a deadline task."),
-                createHelpRow("event DESCRIPTION /from START /to END", "Add an event."),
+                createHelpRow("deadline DESCRIPTION /by DATE_OR_TIME", "Add a deadline task."),
+                createHelpRow("event DESCRIPTION /from DATE_OR_TIME \n" +
+                        SPACING +
+                        "/to DATE_OR_TIME", "Add an event."),
                 createHelpRow("mark TASK_NUMBER", "Mark a task as completed."),
                 createHelpRow("unmark TASK_NUMBER", "Mark a task as not completed."),
                 createHelpRow("delete TASK_NUMBER", "Remove a task."),

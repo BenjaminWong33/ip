@@ -168,8 +168,7 @@ public class Storage {
             }
 
             try {
-                task = new Deadline(parts[2].trim(),
-                        LocalDate.parse(parts[3].trim()));
+                task = new Deadline(parts[2].trim(), parts[3].trim());
             } catch (DateTimeParseException e) {
                 // An invalid deadline date means this saved line is corrupted.
                 return null;
