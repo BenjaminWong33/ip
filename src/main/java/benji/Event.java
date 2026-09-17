@@ -3,16 +3,17 @@ package benji;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 
 /**
  * Represents a task that takes place during a specified time period.
  */
 public class Event extends Task {
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+
     protected String start;
     protected String end;
-
-    private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("MMM dd yyyy");
     /**
      * Creates a deadline task with a description, start date, and end date.
      * @param description description of the task

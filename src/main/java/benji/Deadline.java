@@ -3,13 +3,14 @@ package benji;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 
 /**
  * Represents a task that must be completed by a specified date or time.
  */
 public class Deadline extends Task {
     private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("MMM dd yyyy");
+            DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 
     protected String by;
 
