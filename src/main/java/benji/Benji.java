@@ -178,7 +178,7 @@ public class Benji {
             Task task = new Deadline(description, LocalDate.parse(by));
             return addTaskAndSave(task);
         } catch (DateTimeParseException e) {
-            throw new BenjiException("Please enter the date in yyyy-MM-dd format.");
+            throw new BenjiException("Please enter a valid date in YYYY-MM-DD format.");
         }
     }
 
