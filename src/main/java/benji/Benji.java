@@ -82,6 +82,9 @@ public class Benji {
 
     /** Returns a numbered list of all tasks. */
     private String listTasks() {
+        if (tasks.size() == 0) {
+            return "Your list is empty";
+        }
         StringBuilder reply = new StringBuilder("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             reply.append("\n").append(i + 1).append(".").append(tasks.get(i));
