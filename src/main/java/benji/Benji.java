@@ -210,9 +210,39 @@ public class Benji {
         if (end.isEmpty()) {
             throw new BenjiException("Please enter end timing after /to");
         }
+        validateEventDateOrder(start, end);
 
         Task task = new Event(description, start, end);
         return addTaskAndSave(task);
+    }
+
+    /**
+     * Validates that comparable event dates are in chronological order.
+     *
+     * <p>Events using free-form times, such as "2pm", remain supported.
+     * Date ordering is checked only when both values use YYYY-MM-DD.</p>
+     *
+     * @param start event start date or time
+     * @param end event end date or time
+     * @throws BenjiException if the start date is after the end date
+     */
+    private void validateEventDateOrder(String start, String end)
+            throws BenjiException {
+        try {
+            // only checks for YYYY-MM-DD format
+            // if start and empty is not in YYYY-MM-DD format, startDate and endDate will
+            // produce the DateTimeParseException
+            LocalDate startDate = LocalDate.parse(start);
+            LocalDate endDate = LocalDate.parse(end);
+
+            if (startDate.isAfter(endDate)) {
+                throw new BenjiException(
+                        "Event start date must be on or before the end date.");
+            }
+        } catch (DateTimeParseException e) {
+            // Preserve support for free-form event times such as "2pm" or "fri"
+            // This exception can be safely ignore if start and end is not in YYYY-MM-DD format (refer to user guide)
+        }
     }
 
     /** Deletes a task and saves the updated list. */

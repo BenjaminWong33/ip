@@ -198,7 +198,7 @@ public class MainWindow {
                 subtitle,
                 createHelpRow("list", "Show every task."),
                 createHelpRow("todo DESCRIPTION", "Add a to-do task."),
-                createHelpRow("deadline DESCRIPTION /by yyyy-MM-dd", "Add a deadline task."),
+                createHelpRow("deadline DESCRIPTION /by YYYY-MM-DD", "Add a deadline task."),
                 createHelpRow("event DESCRIPTION /from START /to END", "Add an event."),
                 createHelpRow("mark TASK_NUMBER", "Mark a task as completed."),
                 createHelpRow("unmark TASK_NUMBER", "Mark a task as not completed."),

@@ -1,5 +1,9 @@
 package benji;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Represents a task that takes place during a specified time period.
  */
@@ -7,6 +11,8 @@ public class Event extends Task {
     protected String start;
     protected String end;
 
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("MMM dd yyyy");
     /**
      * Creates a deadline task with a description, start date, and end date.
      * @param description description of the task
@@ -22,12 +28,28 @@ public class Event extends Task {
     }
 
     /**
+     * Formats an ISO date for display while preserving free-form event times.
+     *
+     * @param dateOrTime event date or time text
+     * @return formatted date, or the original text when it is not an ISO date
+     */
+    private String formatDateOrTime(String dateOrTime) {
+        try {
+            return LocalDate.parse(dateOrTime).format(FORMATTER);
+        } catch (DateTimeParseException e) {
+            return dateOrTime;
+        }
+    }
+
+    /**
      * Returns this event with its start and end times in BENJI's display format.
      *
      * @return the event prefixed with "[E]" and followed by its time range
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.start + " to: " + this.end + ")";
+        return "[E]" + super.toString() + " (from: "
+                + formatDateOrTime(start) + " to: "
+                + formatDateOrTime(end) + ")";
     }
 }
