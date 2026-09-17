@@ -137,8 +137,7 @@ Use either of these options:
 bye
 ```
 
-BENJI sends a farewell message. You can then close the application window
-normally.
+BENJI shows a farewell message and closes automatically.
 
 ## Common errors
 

@@ -1,5 +1,7 @@
 package benji;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.ObjectBinding;
@@ -19,6 +21,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+
 
 /**
  * Controls BENJI's main application window.
@@ -156,12 +160,16 @@ public class MainWindow {
             return;
         }
 
-        if (Parser.getCommand(userText) == Command.HELP) {
+        Command command = Parser.getCommand(userText);
+        if (command == Command.HELP) {
             addDialogBoxes(DialogBox.getUserDialog(userText, userImage));
             userInput.clear();
             showHelp();
             return;
         }
+
+
+
         String benjiText = benji.getResponse(userText);
 
         addDialogBoxes(
@@ -169,6 +177,23 @@ public class MainWindow {
                 DialogBox.getBenjiDialog(benjiText, benjiImage));
 
         userInput.clear();
+
+        if (command == Command.BYE) {
+            exitAfterGoodbye();
+        }
+    }
+
+    /**
+     * Disables input and closes BENJI after showing the farewell message.
+     */
+    private void exitAfterGoodbye() {
+        userInput.setDisable(true);
+        sendButton.setDisable(true);
+        helpButton.setDisable(true);
+
+        PauseTransition exitDelay = new PauseTransition(Duration.seconds(1.5));
+        exitDelay.setOnFinished(event -> Platform.exit());
+        exitDelay.play();
     }
 
     /**
