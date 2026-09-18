@@ -30,7 +30,7 @@ import javafx.util.Duration;
 public class MainWindow {
     // Most of the codes were reused from se-education.org javafx tutorial
     // Chatgpt 5.6 Terra Medium was used extensively to suggest some methods
-    private static final String helpRowSpacing = "                  ";
+    private static final String HELP_ROW_SPACING = "                  ";
 
     @FXML
     private AnchorPane mainPane;
@@ -232,7 +232,7 @@ public class MainWindow {
                 createHelpRow("todo DESCRIPTION", "Add a to-do task."),
                 createHelpRow("deadline DESCRIPTION /by DATE_OR_TIME", "Add a deadline task."),
                 createHelpRow("event DESCRIPTION /from DATE_OR_TIME \n"
-                        + helpRowSpacing
+                        + HELP_ROW_SPACING
                         + "/to DATE_OR_TIME", "Add an event."),
                 createHelpRow("mark TASK_NUMBER", "Mark a task as completed."),
                 createHelpRow("unmark TASK_NUMBER", "Mark a task as not completed."),
