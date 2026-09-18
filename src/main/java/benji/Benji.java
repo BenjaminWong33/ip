@@ -82,6 +82,9 @@ public class Benji {
 
     /** Returns a numbered list of all tasks. */
     private String listTasks() {
+        if (tasks.size() == 0) {
+            return "Your list is empty";
+        }
         StringBuilder reply = new StringBuilder("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             reply.append("\n").append(i + 1).append(".").append(tasks.get(i));
@@ -125,6 +128,18 @@ public class Benji {
     }
 
     /**
+     * Returns the task-count message with correct singular or plural wording.
+     *
+     * @return message stating the current number of tasks
+     */
+    private String getTaskCountMessage() {
+        int taskCount = tasks.size();
+        String taskWord = taskCount == 1 ? "task" : "tasks";
+
+        return "Now you have " + taskCount + " " + taskWord + " in the list.";
+    }
+
+    /**
      * Add a task, saves the updated list, and returns a confirmation message.
      *
      * @param task task to add
@@ -133,13 +148,17 @@ public class Benji {
     private String addTaskAndSave(Task task) {
         tasks.add(task);
         Storage.saveTasks(tasks);
-        return "Got it. I've added this task:\n  " + task + "\nNow you have "
-                + tasks.size() + " tasks in the list.";
+        return "Got it. I've added this task:\n  " + task + "\n"
+                + getTaskCountMessage();
     }
 
     /** Adds a deadline task and saves the updated list. */
     private String addDeadline(String userInput) throws BenjiException {
         String taskDescription = userInput.substring("deadline".length()).trim();
+        if (taskDescription.isEmpty()) {
+            throw new BenjiException("Please enter a description after deadline.");
+        }
+
         int byIndex = taskDescription.indexOf("/by");
         if (byIndex == -1) {
             throw new BenjiException("Please ensure '/by TIME' is included in your deadline description.");
@@ -155,17 +174,17 @@ public class Benji {
             throw new BenjiException("Please enter the timing after /by");
         }
 
-        try {
-            Task task = new Deadline(description, LocalDate.parse(by));
-            return addTaskAndSave(task);
-        } catch (DateTimeParseException e) {
-            throw new BenjiException("Please enter the date in yyyy-MM-dd format.");
-        }
+        Task task = new Deadline(description, by);
+        return addTaskAndSave(task);
     }
 
     /** Adds an event task and saves the updated list. */
     private String addEvent(String userInput) throws BenjiException {
         String taskDescription = userInput.substring("event".length()).trim();
+        if (taskDescription.isEmpty()) {
+            throw new BenjiException("Please enter a description after event.");
+        }
+
         int startIndex = taskDescription.indexOf("/from");
         int endIndex = taskDescription.indexOf("/to");
         if (startIndex == -1 || endIndex == -1 || startIndex > endIndex) {
@@ -187,9 +206,39 @@ public class Benji {
         if (end.isEmpty()) {
             throw new BenjiException("Please enter end timing after /to");
         }
+        validateEventDateOrder(start, end);
 
         Task task = new Event(description, start, end);
         return addTaskAndSave(task);
+    }
+
+    /**
+     * Validates that comparable event dates are in chronological order.
+     *
+     * <p>Events using free-form times, such as "2pm", remain supported.
+     * Date ordering is checked only when both values use YYYY-MM-DD.</p>
+     *
+     * @param start event start date or time
+     * @param end event end date or time
+     * @throws BenjiException if the start date is after the end date
+     */
+    private void validateEventDateOrder(String start, String end)
+            throws BenjiException {
+        try {
+            // only checks for YYYY-MM-DD format
+            // if start and empty is not in YYYY-MM-DD format, startDate and endDate will
+            // produce the DateTimeParseException
+            LocalDate startDate = LocalDate.parse(start);
+            LocalDate endDate = LocalDate.parse(end);
+
+            if (startDate.isAfter(endDate)) {
+                throw new BenjiException(
+                        "Event start date must be on or before the end date.");
+            }
+        } catch (DateTimeParseException e) {
+            // Preserve support for free-form event times such as "2pm" or "fri"
+            // This exception can be safely ignore if start and end is not in YYYY-MM-DD format (refer to user guide)
+        }
     }
 
     /** Deletes a task and saves the updated list. */
@@ -207,8 +256,8 @@ public class Benji {
 
             Task deletedTask = tasks.delete(taskNumber - 1);
             Storage.saveTasks(tasks);
-            return "Noted. I've removed this task:\n  " + deletedTask + "\nNow you have "
-                    + tasks.size() + " tasks in the list.";
+            return "Noted. I've removed this task:\n  " + deletedTask + "\n"
+                    + getTaskCountMessage();
         } catch (NumberFormatException e) {
             throw new BenjiException("Please enter a whole task number after delete.");
         }

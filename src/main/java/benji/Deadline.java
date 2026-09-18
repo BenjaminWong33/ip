@@ -2,34 +2,48 @@ package benji;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 /**
- * Represents a task that must be completed by a specified date.
+ * Represents a task that must be completed by a specified date or time.
  */
 public class Deadline extends Task {
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
-    protected LocalDate by;
+
+    protected String by;
 
     /**
-     * Creates a deadline task with a description and deadline date.
-     * @param description description of the task.
-     * @param by description of the date bby which the task should be completed.
+     * Creates a deadline task with a description and deadline text.
+     *
+     * @param description task description
+     * @param by deadline date or time
      */
-    public Deadline(String description, LocalDate by) {
+    public Deadline(String description, String by) {
         super(description);
-        assert by != null : "A deadline cannot exist without a date";
+        assert by != null && !by.isBlank()
+                : "Deadline should have a date or time";
         this.by = by;
     }
 
     /**
-     * Returns this deadline with its due date in BENJI's display format.
+     * Formats ISO dates while preserving flexible deadline text.
      *
-     * @return the deadline prefixed with "[D]" and followed by its due date
+     * @param dateOrTime deadline date or time
+     * @return formatted ISO date, or the original text
      */
+    private String formatDateOrTime(String dateOrTime) {
+        try {
+            return LocalDate.parse(dateOrTime).format(FORMATTER);
+        } catch (DateTimeParseException e) {
+            return dateOrTime;
+        }
+    }
+
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by.format(FORMATTER) + ")";
+        return "[D]" + super.toString() + " (by: "
+                + formatDateOrTime(by) + ")";
     }
 }

@@ -39,3 +39,43 @@ Here are the tasks in your list:
 4.[T][ ] lunch
 Bye. Hope to see you again soon!
 ```
+
+## Bare commands show specific guidance
+
+Aim: Verify that commands without required arguments show command-specific errors.
+
+### Input
+
+```text
+todo
+find
+deadline
+event
+mark
+unmark
+delete
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+  BBBBB   EEEEEEE  NN   NN  JJJJJJJ  IIIIIII
+  BB  BB  EE       NNN  NN     JJJ     III
+  BBBBB   EEEEE    NN N NN     JJJ     III
+  BB  BB  EE       NN  NNN  JJ JJJ     III
+  BBBBB   EEEEEEE  NN   NN   JJJJJ   IIIIIII
+
+Hello! I'm BENJI.
+What can I do for you?
+____________________________________________________________
+Please enter a description after todo
+Please enter a keyword after find.
+Please enter a description after deadline.
+Please enter a description after event.
+Please enter a whole task number after mark.
+Please enter a whole task number after unmark.
+Please enter a task number after delete
+Bye. Hope to see you again soon!
+```

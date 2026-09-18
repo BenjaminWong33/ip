@@ -39,4 +39,15 @@ public class ParserTest {
         assertEquals(Command.FIND, Parser.getCommand("find homework"));
         assertEquals(Command.BYE, Parser.getCommand("bye"));
     }
+
+    @Test
+    public void parseBareArgumentCommands_returnsMatchingCommands() {
+        assertEquals(Command.MARK, Parser.getCommand("mark"));
+        assertEquals(Command.UNMARK, Parser.getCommand("unmark"));
+        assertEquals(Command.TODO, Parser.getCommand("todo"));
+        assertEquals(Command.DEADLINE, Parser.getCommand("deadline"));
+        assertEquals(Command.EVENT, Parser.getCommand("event"));
+        assertEquals(Command.DELETE, Parser.getCommand("delete"));
+        assertEquals(Command.FIND, Parser.getCommand("find"));
+    }
 }

@@ -20,18 +20,18 @@ start the application again.
 
 ## Command summary
 
-| Command | Purpose |
-| --- | --- |
-| `todo DESCRIPTION` | Add a to-do task. |
-| `deadline DESCRIPTION /by yyyy-MM-dd` | Add a task with a deadline. |
-| `event DESCRIPTION /from START /to END` | Add an event with a start and end time. |
-| `list` | Show every task. |
-| `mark TASK_NUMBER` | Mark a task as completed. |
-| `unmark TASK_NUMBER` | Mark a task as incomplete. |
-| `delete TASK_NUMBER` | Remove a task. |
-| `find KEYWORD` | Show tasks containing a keyword. |
-| `help` | Open the command guide. |
-| `bye` | Ask BENJI to say goodbye. |
+| Command                                                 | Purpose |
+|---------------------------------------------------------| --- |
+| `todo DESCRIPTION`                                      | Add a to-do task. |
+| `deadline DESCRIPTION /by DATE_OR_TIME`                 | Add a task with a deadline. |
+| `event DESCRIPTION /from DATE_OR_TIME /to DATE_OR_TIME` | Add an event with a start and end time. |
+| `list`                                                  | Show every task. |
+| `mark TASK_NUMBER`                                      | Mark a task as completed. |
+| `unmark TASK_NUMBER`                                    | Mark a task as incomplete. |
+| `delete TASK_NUMBER`                                    | Remove a task. |
+| `find KEYWORD`                                          | Show tasks containing a keyword. |
+| `help`                                                  | Open the command guide. |
+| `bye`                                                   | Ask BENJI to say goodbye. |
 
 ## Managing tasks
 
@@ -47,16 +47,19 @@ BENJI adds the task as `[T][ ] buy groceries`.
 
 ### Add a deadline
 
-Use the date format `yyyy-MM-dd`.
+Use `/by` followed by DATE_OR_TIME<br>
+DATE_OR_TIME can be in `YYYY-MM-DD` format or a `"string"` description.
 
 ```text
 deadline submit report /by 2026-09-25
+deadline submit report /by 2pm
 ```
 
 The task is shown with a deadline, for example:
 
 ```text
 [D][ ] submit report (by: Sep 25 2026)
+[D][ ] submit report (by: 2pm)
 ```
 
 > [!WARNING]
@@ -65,16 +68,19 @@ The task is shown with a deadline, for example:
 
 ### Add an event
 
-Use `/from` before `/to`.
+Use `/from` before `/to`.<br>
+DATE_OR_TIME can be in `YYYY-MM-DD` format or a `"string"` description.
 
 ```text
 event team meeting /from 2pm /to 3pm
+event team meeting /from 2026-10-03 /to 2026-10-05
 ```
 
 This creates an event such as:
 
 ```text
 [E][ ] team meeting (from: 2pm to: 3pm)
+[E][ ] team meeting (from: Oct 03 2026 to: Oct 05 2026)
 ```
 
 ### View all tasks
@@ -131,8 +137,7 @@ Use either of these options:
 bye
 ```
 
-BENJI sends a farewell message. You can then close the application window
-normally.
+BENJI shows a farewell message and closes automatically.
 
 ## Common errors
 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,8 +167,7 @@ public class Storage {
             }
 
             try {
-                task = new Deadline(parts[2].trim(),
-                        LocalDate.parse(parts[3].trim()));
+                task = new Deadline(parts[2].trim(), parts[3].trim());
             } catch (DateTimeParseException e) {
                 // An invalid deadline date means this saved line is corrupted.
                 return null;
